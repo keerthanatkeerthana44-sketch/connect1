@@ -1,0 +1,4996 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="CONNECT: Understand your feelings. Find your next small step." />
+<title>CONNECT</title>
+<style>
+/*
+  MindNest global styles.
+  Colors and sizes are APPROXIMATIONS taken from the home-page screenshot.
+  Replace the values in :root with exact tokens from your Figma file
+  (colors, font family, radii) to match the Stitch design precisely.
+*/
+:root {
+  /* Pastel palette: lavender, soft pink, mint, peach, cream */
+  --bg: #fdf8f3;
+  --surface: #ffffff;
+  --surface-soft: #f5effc;
+  --ink: #3b3550;
+  --ink-soft: #6d6584;
+  --primary: #8e7cf0;
+  --primary-ink: #ffffff;
+  --accent: #ece6ff;
+  --pink: #f9d3e0;
+  --mint: #d3f3e4;
+  --peach: #ffe2cc;
+  --cream: #fff8ef;
+  --urgent: #d7262e;
+  --urgent-ink: #ffffff;
+  --border: #e4dcf3;
+  --focus: #1f1b3a;
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-pill: 999px;
+  --shadow: 0 4px 16px rgba(42, 36, 64, 0.06);
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.55;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.25;
+  margin: 0 0 0.5rem;
+}
+
+p {
+  margin: 0 0 0.75rem;
+}
+
+a {
+  color: var(--primary);
+}
+
+button,
+a.btn {
+  font: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 0;
+  background: var(--surface);
+  padding: 0.5rem 1rem;
+  z-index: 100;
+}
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+}
+
+/* ---------- Layout ---------- */
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.page-header h1 {
+  font-size: 1.75rem;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  box-shadow: var(--shadow);
+}
+
+.section-title {
+  font-size: 1.35rem;
+  text-align: center;
+}
+
+.section-subtitle {
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+.eyebrow {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.muted {
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+.disclaimer {
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+}
+
+/* ---------- Header / nav ---------- */
+.site-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.site-header__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-decoration: none;
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.brand__mark {
+  color: var(--primary);
+  font-size: 1.3rem;
+}
+
+.nav {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+  margin-right: auto;
+}
+
+.nav__link {
+  padding: 0.45rem 0.75rem;
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+.nav__link.is-active {
+  background: var(--accent);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.nav__link--soon {
+  opacity: 0.55;
+  cursor: default;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 44px;
+  padding: 0.6rem 1.1rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
+  text-decoration: none;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.btn--primary {
+  background: var(--primary);
+  color: var(--primary-ink);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--border);
+}
+
+.btn--urgent {
+  background: var(--urgent);
+  color: var(--urgent-ink);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  font-weight: 700;
+}
+
+.btn--urgent-soft {
+  background: #fdecec;
+  color: #8a1116;
+  border-color: #f5c2c4;
+}
+
+.btn--call {
+  background: var(--urgent);
+  color: var(--urgent-ink);
+  width: 100%;
+  font-size: 1.05rem;
+}
+
+.page-actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+/* ---------- Home ---------- */
+.hero {
+  text-align: center;
+  padding: 1rem 0 0;
+}
+
+.hero__title {
+  font-size: 2.25rem;
+}
+
+.hero__text {
+  max-width: 560px;
+  margin: 0 auto;
+  color: var(--ink-soft);
+}
+
+.emotion-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.emotion-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.emotion-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  text-align: left;
+  padding: 0.9rem;
+  min-height: 44px;
+  background: var(--surface-soft);
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.emotion-card.is-selected {
+  border-color: var(--primary);
+  background: var(--accent);
+}
+
+.emotion-card__icon {
+  font-size: 1.3rem;
+  color: var(--primary);
+}
+
+.emotion-card__label {
+  font-weight: 600;
+}
+
+.emotion-card__hint {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.emotion-card__badge {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  font-size: 0.7rem;
+  background: var(--primary);
+  color: #fff;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-pill);
+}
+
+.emotion-callout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--accent);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1rem;
+}
+
+.emotion-callout p {
+  margin: 0;
+}
+
+.benefits {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.benefits__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.benefit h3 {
+  font-size: 1rem;
+}
+
+.benefit p {
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  margin: 0;
+}
+
+.support-strip {
+  text-align: center;
+  background: #fdf3f3;
+  border-color: #f2d2d3;
+}
+
+/* ---------- Activities ---------- */
+.activity-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.activity-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  box-shadow: var(--shadow);
+}
+
+.activity-card__title {
+  font-size: 1.1rem;
+}
+
+.activity-card__desc {
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+.activity-card__meta {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+.activity-card__actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.4rem;
+}
+
+/* ---------- Urgent help ---------- */
+.page--urgent {
+  gap: 1.5rem;
+}
+
+.urgent-hero {
+  text-align: center;
+  background: #fdf3f3;
+  border: 1px solid #f2d2d3;
+  border-radius: var(--radius-lg);
+  padding: 1.5rem 1rem;
+}
+
+.urgent-hero h1 {
+  font-size: 1.75rem;
+  color: #7a1015;
+}
+
+.urgent-disclaimer p {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+}
+
+.helpline-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.helpline-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  box-shadow: var(--shadow);
+}
+
+/* Visual hierarchy: mental health support is the primary card. */
+.helpline-card--mental-health {
+  border: 2px solid var(--primary);
+}
+
+.helpline-card__type {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+.helpline-card__name {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.helpline-card__number {
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  margin: 0;
+}
+
+.helpline-card__purpose,
+.helpline-card__avail {
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+.plain-list {
+  padding-left: 1.2rem;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+/* ---------- Footer ---------- */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 1rem;
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+  background: var(--surface);
+}
+
+.site-footer p {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 760px) {
+  .benefits__grid,
+  .activity-grid,
+  .helpline-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero__title {
+    font-size: 1.75rem;
+  }
+
+  .site-header__inner {
+    gap: 0.5rem;
+  }
+
+  .nav {
+    order: 3;
+    width: 100%;
+    margin-right: 0;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+
+  .btn--urgent {
+    margin-left: auto;
+    font-size: 0.8rem;
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .emotion-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Respect users who prefer less motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- Guided activities ---------- */
+.activity-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.activity-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  align-items: center;
+  text-align: center;
+}
+
+.activity-body > * {
+  max-width: 560px;
+}
+
+.activity-body .stack,
+.activity-body .field-label,
+.activity-body .textarea,
+.activity-body .step-list,
+.activity-body .inline-form,
+.activity-body .plain-list {
+  width: 100%;
+  text-align: left;
+}
+
+.progress-text {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+.big-number {
+  font-size: 5rem;
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1;
+}
+
+.sense-title {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.prompt-text {
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.field-label {
+  font-weight: 600;
+  margin: 0;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  font: inherit;
+  padding: 0.7rem 0.9rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.inline-form {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.inline-form .input {
+  flex: 1;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  width: 100%;
+}
+
+.form-error {
+  color: #8a1116;
+  font-weight: 600;
+  margin: 0;
+}
+
+.form-success {
+  color: #1d6b3a;
+  font-weight: 600;
+  margin: 0;
+}
+
+.step-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.step-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  background: var(--surface-soft);
+  border-radius: var(--radius-md);
+  padding: 0.6rem 0.8rem;
+}
+
+.step-item.is-done .step-text {
+  text-decoration: line-through;
+  color: var(--ink-soft);
+}
+
+.step-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.step-check input[type='checkbox'] {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.step-actions {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.step-actions .btn {
+  min-height: 36px;
+  padding: 0.3rem 0.7rem;
+}
+
+/* Breathing circle: a 4s in / 6s out rhythm with no breath holds. */
+.breath-circle {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #cfc6fb 0%, var(--primary) 100%);
+  transform: scale(0.7);
+  transition: transform 4s ease-in-out;
+  margin: 0.5rem auto;
+}
+
+.breath-circle.is-in {
+  transform: scale(1);
+  transition-duration: 4s;
+}
+
+.breath-circle.is-out {
+  transform: scale(0.7);
+  transition-duration: 6s;
+}
+
+.breath-circle.is-paused {
+  transition: none;
+}
+
+.breath-label {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Feedback */
+.feedback {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.feedback-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+
+.feedback-option {
+  min-height: 44px;
+  padding: 0.6rem 0.8rem;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--border);
+  background: var(--surface);
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+.feedback-option.is-selected {
+  border-color: var(--primary);
+  background: var(--accent);
+  font-weight: 600;
+}
+
+.feedback-response {
+  background: var(--surface-soft);
+  border-radius: var(--radius-md);
+  padding: 0.8rem 1rem;
+  margin: 0;
+}
+
+@media (max-width: 760px) {
+  .feedback-options {
+    grid-template-columns: 1fr;
+  }
+
+  .big-number {
+    font-size: 4rem;
+  }
+}
+
+/* Reduced motion: the breathing circle moves in steps, not smoothly. */
+@media (prefers-reduced-motion: reduce) {
+  .breath-circle {
+    transition: none !important;
+  }
+}
+
+/* CONNECT additions: pastel background, brand, mood, insights and relax screens.
+   Loaded after global.css, so these rules take priority where they overlap. */
+
+body {
+  background: linear-gradient(165deg, #fdf8f3 0%, #f5effc 45%, #e9f8f0 100%) fixed;
+  min-height: 100vh;
+}
+
+/* ---------- Brand ---------- */
+.brand__name {
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  background: linear-gradient(90deg, #8e7cf0, #e98fb8, #f2a97e);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.brand-banner {
+  font-size: clamp(2.2rem, 7vw, 3.4rem);
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  margin: 0;
+  background: linear-gradient(90deg, #8e7cf0, #e98fb8, #f2a97e, #8fd8b4);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.brand-tagline {
+  color: var(--ink-soft);
+  margin: 0.25rem 0 0.5rem;
+  font-size: 1.05rem;
+}
+
+/* Friendlier cards and buttons */
+.card {
+  border-radius: 24px;
+  box-shadow: 0 8px 28px rgba(142, 124, 240, 0.12);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn--primary {
+  background: linear-gradient(135deg, #8e7cf0, #b89cf5);
+  box-shadow: 0 4px 12px rgba(142, 124, 240, 0.3);
+}
+
+.btn--primary:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+}
+
+.btn--ghost:hover {
+  background: var(--accent);
+}
+
+.btn--danger {
+  background: #fde7ea;
+  color: #8a1116;
+  border-color: #f2b8be;
+}
+
+.card-title {
+  font-size: 1.15rem;
+  margin: 0;
+}
+
+.stack-lg {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.small {
+  font-size: 0.82rem;
+}
+
+.empty-state {
+  text-align: center;
+  background: linear-gradient(135deg, #fff1f6, #eef9f3);
+}
+
+.helped-badge {
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: var(--mint);
+  color: #1d5c3f;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+}
+
+.rating-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: var(--cream);
+  border-radius: 16px;
+  padding: 0.9rem;
+}
+
+/* ---------- My Mood ---------- */
+.chip-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chip {
+  min-height: 40px;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  border: 2px solid var(--border);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+
+.chip.is-selected {
+  background: linear-gradient(135deg, var(--pink), var(--peach));
+  border-color: #e98fb8;
+  font-weight: 600;
+}
+
+.bar-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 180px;
+  padding-top: 1.5rem;
+  margin-top: 0.75rem;
+  border-bottom: 1px dashed var(--border);
+}
+
+.bar-col {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+.bar {
+  width: 100%;
+  min-height: 2px;
+  border-radius: 10px 10px 4px 4px;
+  background: linear-gradient(180deg, #b9a9f8, #8e7cf0);
+  transition: height 0.4s ease;
+}
+
+.bar-count,
+.bar-label {
+  font-size: 0.7rem;
+  color: var(--ink-soft);
+  min-height: 1em;
+}
+
+.filters {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+
+.filter {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.filter select {
+  font: inherit;
+  padding: 0.5rem 0.7rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.history-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  background: var(--surface-soft);
+  border-radius: 16px;
+  padding: 0.75rem 0.9rem;
+}
+
+.history-emotion {
+  font-weight: 600;
+  margin: 0;
+}
+
+.history-note {
+  margin: 0.25rem 0 0;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+.history-actions {
+  display: flex;
+  gap: 0.4rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.danger-zone {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* ---------- Insights ---------- */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.stat {
+  text-align: center;
+  background: linear-gradient(135deg, var(--mint), #e9f8f0);
+}
+
+.stat-number {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin: 0;
+  color: #2b7356;
+}
+
+.count-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.count-list li {
+  display: grid;
+  grid-template-columns: 9rem 1fr 2rem;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.9rem;
+}
+
+.count-bar-wrap {
+  background: var(--surface-soft);
+  border-radius: 999px;
+  height: 10px;
+  overflow: hidden;
+}
+
+.count-bar {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #b9a9f8, #f2a9c8);
+  border-radius: 999px;
+}
+
+.count-num {
+  text-align: right;
+  font-weight: 600;
+}
+
+/* ---------- Relax ---------- */
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.tab {
+  min-height: 42px;
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  border: 2px solid var(--border);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.tab.is-active {
+  background: linear-gradient(135deg, var(--mint), var(--pink));
+  border-color: #9fd9bd;
+  font-weight: 700;
+}
+
+.relax-panel {
+  min-height: 380px;
+  display: flex;
+  justify-content: center;
+}
+
+.fun-panel {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+
+.fun-label {
+  margin: 0;
+  color: var(--ink);
+  font-size: 1.05rem;
+  max-width: 520px;
+}
+
+/* Breathing bubble */
+.bubble {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffffff 0%, #d9ccf7 35%, #8e7cf0 100%);
+  box-shadow: 0 0 40px rgba(142, 124, 240, 0.35);
+  transform: scale(0.7);
+  transition: transform 4s ease-in-out;
+  max-width: 100%;
+}
+
+.bubble--in {
+  transform: scale(1);
+  transition-duration: 4s;
+}
+
+.bubble--out {
+  transform: scale(0.65);
+  transition-duration: 6s;
+}
+
+.bubble.is-idle {
+  transform: scale(0.8);
+}
+
+/* Pop the bubbles */
+.pop-field {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  height: 320px;
+  background: linear-gradient(180deg, #ffffff, #f5effc);
+  border-radius: 22px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.pop-bubble {
+  position: absolute;
+  border: none;
+  border-radius: 50%;
+  box-shadow: inset -6px -8px 14px rgba(0, 0, 0, 0.06), 0 4px 10px rgba(142, 124, 240, 0.2);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.pop-bubble:hover {
+  transform: scale(1.08);
+}
+
+.pop-bubble:active {
+  transform: scale(0.6);
+}
+
+/* Virtual garden */
+.garden-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 420px;
+}
+
+.garden-cell {
+  aspect-ratio: 1;
+  border-radius: 14px;
+  border: none;
+  font-size: 1.6rem;
+  color: #d2648f;
+  cursor: pointer;
+  background: linear-gradient(180deg, #d9b99b, #c9a585);
+  transition: background 0.3s ease;
+}
+
+.garden-cell--1 {
+  background: linear-gradient(180deg, #d9b99b, #cdeee0);
+  color: #3f9c74;
+}
+
+.garden-cell--2 {
+  background: linear-gradient(180deg, #d9b99b, #f7e6c4);
+  color: #e9a14e;
+}
+
+.garden-cell--3 {
+  background: linear-gradient(180deg, #d9b99b, #fbd8e7);
+  color: #d2648f;
+}
+
+/* Colour game */
+.palette {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.swatch {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+}
+
+.swatch.is-chosen {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.tile-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+  width: 100%;
+  max-width: 360px;
+}
+
+.tile {
+  aspect-ratio: 1;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+
+/* Mood face */
+.mood-face {
+  width: 180px;
+  height: 180px;
+  max-width: 100%;
+}
+
+.face-body {
+  fill: #fff1b8;
+  stroke: #f2c94c;
+  stroke-width: 3;
+}
+
+.face-cheek {
+  fill: #f9d3e0;
+  opacity: 0.8;
+}
+
+.face-eye {
+  fill: #3b3550;
+}
+
+.face-mouth {
+  fill: none;
+  stroke: #3b3550;
+  stroke-width: 6;
+  stroke-linecap: round;
+  transition: d 0.4s ease;
+}
+
+.slider {
+  width: 100%;
+  max-width: 320px;
+  accent-color: var(--primary);
+}
+
+.slider-scale {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 320px;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+
+/* 60-second pause */
+.timer {
+  font-size: 4rem;
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1;
+}
+
+.progress-track {
+  width: 100%;
+  max-width: 420px;
+  height: 12px;
+  background: var(--surface-soft);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #9fd9bd, #f9d3e0);
+  border-radius: 999px;
+  transition: width 1s linear;
+}
+
+/* Tap targets and motion */
+@media (max-width: 760px) {
+  .stats-row {
+    grid-template-columns: 1fr;
+  }
+
+  .count-list li {
+    grid-template-columns: 6.5rem 1fr 2rem;
+  }
+
+  .pop-field {
+    height: 280px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bubble,
+  .bar,
+  .face-mouth,
+  .progress-fill,
+  .card,
+  .btn--primary:hover {
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+/* ================= Landing page ================= */
+.landing {
+  position: relative;
+  overflow: hidden;
+}
+
+.landing .hero,
+.landing .mood-grid,
+.landing .benefits,
+.landing .support-strip,
+.landing .disclaimer {
+  position: relative;
+  z-index: 1;
+}
+
+.floaters {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.floater {
+  position: absolute;
+  font-size: 1.7rem;
+  opacity: 0.7;
+  animation: floatUp 7s ease-in-out infinite alternate;
+}
+
+.hero__title {
+  font-size: clamp(1.9rem, 5vw, 2.8rem);
+  background: linear-gradient(90deg, #6f5fe0, #d86ba3);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-wrap: balance;
+}
+
+.mood-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.mood-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 1.1rem 0.6rem;
+  min-height: 44px;
+  border: 2px solid transparent;
+  border-radius: 24px;
+  background: linear-gradient(160deg, var(--tint) 0%, #ffffff 120%);
+  box-shadow: 0 6px 18px rgba(142, 124, 240, 0.12);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.mood-card:hover,
+.mood-card:focus-visible {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 26px rgba(142, 124, 240, 0.22);
+  border-color: #c9bcf7;
+}
+
+.mood-card:active {
+  transform: scale(0.97);
+}
+
+.mood-card__emoji {
+  font-size: 2.6rem;
+  line-height: 1.1;
+  transition: transform 0.25s ease;
+}
+
+.mood-card:hover .mood-card__emoji {
+  animation: anim-bounce 0.6s ease;
+}
+
+.mood-card__label {
+  font-weight: 700;
+  font-size: 1.02rem;
+}
+
+.mood-card__hint {
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+@media (min-width: 760px) {
+  .mood-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+/* ================= Emotion screen ================= */
+.feel-page {
+  max-width: 760px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.feel-hero {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  background: linear-gradient(160deg, var(--tint) 0%, #ffffff 90%);
+  padding: 2rem 1.25rem;
+}
+
+.feel-title {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.feel-message {
+  font-size: 1.1rem;
+  max-width: 540px;
+  color: var(--ink);
+}
+
+.feel-emoji {
+  font-size: 6rem;
+  line-height: 1.1;
+  display: inline-block;
+}
+
+.feel-emoji-small {
+  font-size: 2.2rem;
+  display: inline-block;
+}
+
+.feel-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: center;
+}
+
+.feel-game {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: linear-gradient(160deg, var(--tint) 0%, #ffffff 80%);
+}
+
+.feel-game__head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.feel-game__head .eyebrow {
+  margin: 0;
+}
+
+.feel-emoji--wobble,
+.feel-emoji-small.feel-emoji--wobble { animation: anim-wobble 3.2s ease-in-out infinite; }
+.feel-emoji--tremble,
+.feel-emoji-small.feel-emoji--tremble { animation: anim-tremble 2.4s ease-in-out infinite; }
+.feel-emoji--sway,
+.feel-emoji-small.feel-emoji--sway { animation: anim-sway 5s ease-in-out infinite; }
+.feel-emoji--shake,
+.feel-emoji-small.feel-emoji--shake { animation: anim-shake 1.6s ease-in-out infinite; }
+.feel-emoji--bounce,
+.feel-emoji-small.feel-emoji--bounce { animation: anim-bounce 1.8s ease-in-out infinite; }
+.feel-emoji--fade,
+.feel-emoji-small.feel-emoji--fade { animation: anim-fade 5s ease-in-out infinite; }
+
+.emoji-answers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.6rem;
+}
+
+.emoji-answer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.8rem 0.5rem;
+  min-height: 44px;
+  border-radius: 20px;
+  border: 2px solid var(--border);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.emoji-answer:hover {
+  transform: translateY(-2px);
+}
+
+.emoji-answer.is-selected {
+  border-color: var(--primary);
+  background: var(--accent);
+  font-weight: 600;
+}
+
+.emoji-answer__face {
+  font-size: 2rem;
+}
+
+/* ================= Game pieces ================= */
+.btn--big {
+  padding: 0.9rem 1.6rem;
+  font-size: 1.1rem;
+}
+
+.match-options {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.match-option {
+  font-size: 3rem;
+  width: 96px;
+  height: 96px;
+  border-radius: 24px;
+  border: 3px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.match-option:hover:not(:disabled) {
+  transform: scale(1.06);
+}
+
+.match-option.is-picked {
+  border-color: var(--primary);
+  background: var(--accent);
+}
+
+.kind-word {
+  font-size: 1.25rem;
+  max-width: 520px;
+  min-height: 80px;
+  padding: 1rem 1.25rem;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #fff1f6, #eef9f3);
+  animation: anim-rise 0.5s ease;
+}
+
+.step-card {
+  font-size: 1.15rem;
+  max-width: 520px;
+  padding: 1.1rem 1.25rem;
+  border-radius: 20px;
+  background: var(--cream);
+  border: 1px solid var(--border);
+}
+
+.release-zone {
+  position: relative;
+  width: 100%;
+  height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.release-button {
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  border: none;
+  font: inherit;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #ffffff;
+  background: radial-gradient(circle at 35% 30%, #ffd1e1, #f48aaa 60%, #e56f96);
+  box-shadow: 0 10px 30px rgba(229, 111, 150, 0.35);
+  cursor: pointer;
+  transition: transform 0.1s ease;
+  z-index: 1;
+}
+
+.release-button:active {
+  transform: scale(0.92);
+}
+
+.spark {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  animation: spark-go 0.7s ease-out forwards;
+  pointer-events: none;
+}
+
+.sense-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: 0.6rem;
+  width: 100%;
+  max-width: 520px;
+}
+
+.sense-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.8rem 0.4rem;
+  min-height: 44px;
+  border-radius: 18px;
+  border: 2px solid var(--border);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+
+.sense-btn span {
+  font-size: 1.6rem;
+}
+
+.sense-btn.is-explored {
+  border-color: #9fd9bd;
+}
+
+.sense-btn.is-active {
+  border-color: var(--primary);
+  background: var(--accent);
+}
+
+.shape-field {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  height: 320px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, #ffffff, #f5effc);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.shape {
+  position: absolute;
+  border: none;
+  border-radius: 46% 54% 52% 48% / 50% 44% 56% 50%;
+  opacity: 0.85;
+  cursor: pointer;
+  transition: width 0.4s ease, height 0.4s ease;
+  animation: shape-drift 7s ease-in-out infinite alternate;
+}
+
+.shape.is-paused {
+  animation-play-state: paused;
+}
+
+.confetti-wrap {
+  position: relative;
+  min-height: 260px;
+  overflow: hidden;
+}
+
+.confetti-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -12px;
+  width: 9px;
+  height: 14px;
+  border-radius: 3px;
+  animation: confetti-fall 3s linear forwards;
+}
+
+.goal-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.goal-item {
+  width: 100%;
+  text-align: left;
+  padding: 0.7rem 0.9rem;
+  min-height: 44px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+
+.goal-item.is-done {
+  background: var(--mint);
+  text-decoration: line-through;
+  color: var(--ink-soft);
+}
+
+/* ================= Keyframes ================= */
+@keyframes floatUp {
+  from { transform: translateY(0) rotate(-4deg); }
+  to { transform: translateY(-16px) rotate(6deg); }
+}
+@keyframes anim-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+@keyframes anim-wobble {
+  0%, 100% { transform: rotate(-6deg); }
+  50% { transform: rotate(6deg); }
+}
+@keyframes anim-sway {
+  0%, 100% { transform: rotate(-3deg) translateY(0); }
+  50% { transform: rotate(3deg) translateY(4px); }
+}
+@keyframes anim-tremble {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
+}
+@keyframes anim-shake {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  20% { transform: translateX(-6px) rotate(-4deg); }
+  40% { transform: translateX(6px) rotate(4deg); }
+  60% { transform: translateX(-4px) rotate(-2deg); }
+  80% { transform: translateX(4px) rotate(2deg); }
+}
+@keyframes anim-fade {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+@keyframes anim-rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes spark-go {
+  from { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  to { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0.2); opacity: 0; }
+}
+@keyframes confetti-fall {
+  from { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  to { transform: translate(var(--drift), 420px) rotate(540deg); opacity: 0.6; }
+}
+@keyframes shape-drift {
+  from { transform: translate(0, 0); }
+  to { transform: translate(14px, -12px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floater,
+  .feel-emoji,
+  .feel-emoji-small,
+  .mood-card__emoji,
+  .shape,
+  .confetti-piece,
+  .spark,
+  .kind-word {
+    animation: none !important;
+  }
+  .mood-card:hover,
+  .mood-card:focus-visible {
+    transform: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .feel-emoji {
+    font-size: 4.5rem;
+  }
+  .match-option {
+    width: 84px;
+    height: 84px;
+    font-size: 2.5rem;
+  }
+  .release-zone {
+    height: 230px;
+  }
+  .release-button {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.24.7/babel.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" data-presets="env,react">
+const { useState, useEffect, useMemo, useRef, useContext, createContext } = React;
+
+// ---- Minimal router (replaces react-router-dom so this is one file) ----
+const __listeners = new Set();
+function __notify() { __listeners.forEach((f) => f()); }
+window.addEventListener('popstate', __notify);
+function __currentPath() {
+  const h = window.location.hash.replace(/^#/, '') || '/';
+  return h.split('?')[0];
+}
+function __useLocationSync() {
+  const [, setTick] = useState(0);
+  useEffect(() => {
+    const f = () => setTick((t) => t + 1);
+    __listeners.add(f);
+    return () => { __listeners.delete(f); };
+  }, []);
+  return { pathname: __currentPath(), state: (window.history.state && window.history.state.routeState) ?? null };
+}
+function __go(to, state) {
+  window.history.pushState({ routeState: state ?? null }, '', '#' + to);
+  __notify();
+}
+function __matchPath(pattern, path) {
+  if (pattern === '*') return { params: {} };
+  const pp = pattern.split('/').filter(Boolean);
+  const sp = path.split('/').filter(Boolean);
+  if (pp.length !== sp.length) return null;
+  const params = {};
+  for (let i = 0; i < pp.length; i++) {
+    if (pp[i].startsWith(':')) params[pp[i].slice(1)] = decodeURIComponent(sp[i]);
+    else if (pp[i] !== sp[i]) return null;
+  }
+  return { params };
+}
+const __ParamsCtx = createContext({});
+function HashRouter({ children }) { return children; }
+function Routes({ children }) {
+  const loc = __useLocationSync();
+  for (const r of React.Children.toArray(children)) {
+    const m = __matchPath(r.props.path, loc.pathname);
+    if (m) return <__ParamsCtx.Provider value={m.params}>{r.props.element}</__ParamsCtx.Provider>;
+  }
+  return null;
+}
+function Route() { return null; }
+function useParams() { return useContext(__ParamsCtx); }
+function useLocation() { return __useLocationSync(); }
+function useNavigate() {
+  __useLocationSync();
+  return (to, opts) => { if (typeof to === 'number') window.history.go(to); else __go(to, opts && opts.state); };
+}
+function Link({ to, state, onClick, ...rest }) {
+  return (
+    <a
+      {...rest}
+      href={'#' + to}
+      onClick={(e) => {
+        if (onClick) onClick(e);
+        if (!e.defaultPrevented) { e.preventDefault(); __go(to, state); }
+      }}
+    />
+  );
+}
+function NavLink({ to, end, className, children, ...rest }) {
+  const loc = __useLocationSync();
+  const active = end ? loc.pathname === to : loc.pathname.startsWith(to);
+  const cls = typeof className === 'function' ? className({ isActive: active }) : className;
+  return <Link to={to} className={cls} {...rest}>{children}</Link>;
+}
+// ---- end router ----
+
+// ---- components/Navigation ----
+const M_components_Navigation = (() => {
+
+
+const LINKS = [
+  { to: '/', label: 'Home', end: true },
+  { to: '/mood', label: 'My Mood' },
+  { to: '/insights', label: 'Insights' },
+  { to: '/relax', label: 'Relax' },
+];
+
+function Navigation() {
+  return (
+    <header className="site-header">
+      <div className="site-header__inner">
+        <Link to="/" className="brand" aria-label="CONNECT home">
+          <span className="brand__mark" aria-hidden="true">◍</span>
+          <span className="brand__name">CONNECT</span>
+        </Link>
+
+        <nav className="nav" aria-label="Main">
+          {LINKS.map((link) => (
+            <NavLink
+              key={link.to}
+              to={link.to}
+              end={link.end}
+              className={({ isActive }) => `nav__link${isActive ? ' is-active' : ''}`}
+            >
+              {link.label}
+            </NavLink>
+          ))}
+        </nav>
+
+        <Link to="/urgent-help" className="btn btn--urgent">
+          I NEED URGENT HELP
+        </Link>
+      </div>
+    </header>
+  );
+}
+
+return { default: Navigation, Navigation };
+})();
+
+// ---- components/Footer ----
+const M_components_Footer = (() => {
+function Footer() {
+  return (
+    <footer className="site-footer">
+      <p>
+        <strong>CONNECT</strong> supports everyday emotional well-being through self-guided activities. It is not a
+        diagnostic tool, does not replace professional mental health care, and is not a substitute for emergency
+        services.
+      </p>
+    </footer>
+  );
+}
+
+return { default: Footer, Footer };
+})();
+
+// ---- data/emotions ----
+const M_data_emotions = (() => {
+// The ten mood options on the landing page.
+// `tint` is the soft pastel shown behind each card.
+const EMOTIONS = [
+  { id: 'stressed', label: 'Stressed', emoji: '😰', hint: 'Tense or under pressure', tint: '#ffe2cc' },
+  { id: 'anxious', label: 'Anxious', emoji: '😟', hint: 'Worried or on edge', tint: '#e6e0ff' },
+  { id: 'sad', label: 'Sad', emoji: '😢', hint: 'Low or heavy-hearted', tint: '#d8ecff' },
+  { id: 'angry', label: 'Angry', emoji: '😡', hint: 'Frustrated or irritated', tint: '#ffd6d6' },
+  { id: 'overwhelmed', label: 'Overwhelmed', emoji: '😵', hint: 'Too much at once', tint: '#fff1c7' },
+  { id: 'exhausted', label: 'Tired', emoji: '😴', hint: 'Drained or worn out', tint: '#e4e9ff' },
+  { id: 'numb', label: 'Numb', emoji: '😶', hint: 'Far away or flat', tint: '#ececec' },
+  { id: 'happy', label: 'Happy', emoji: '😊', hint: 'Lighter than usual', tint: '#fff0b3' },
+  { id: 'calm', label: 'Calm', emoji: '😌', hint: 'Settled and at ease', tint: '#d3f3e4' },
+  { id: 'motivated', label: 'Motivated', emoji: '🤩', hint: 'Ready to move forward', tint: '#ffd9ec' },
+];
+
+function getEmotion(id) {
+  return EMOTIONS.find((e) => e.id === id) ?? null;
+}
+
+return { EMOTIONS, getEmotion };
+})();
+
+// ---- pages/Home ----
+const M_pages_Home = (() => {
+
+const { EMOTIONS } = M_data_emotions;
+
+// Decorative floating emojis. They are hidden from screen readers.
+const FLOATERS = [
+  { e: '✨', x: '6%', y: '10%', d: '0s' },
+  { e: '🌿', x: '88%', y: '8%', d: '1.2s' },
+  { e: '💜', x: '12%', y: '70%', d: '0.6s' },
+  { e: '☁️', x: '84%', y: '62%', d: '1.8s' },
+  { e: '🌈', x: '50%', y: '2%', d: '2.4s' },
+  { e: '🫧', x: '70%', y: '84%', d: '0.9s' },
+];
+
+function Home() {
+  const navigate = useNavigate();
+
+  return (
+    <div className="page page--home landing">
+      <div className="floaters" aria-hidden="true">
+        {FLOATERS.map((f, i) => (
+          <span key={i} className="floater" style={{ left: f.x, top: f.y, animationDelay: f.d }}>{f.e}</span>
+        ))}
+      </div>
+
+      <section className="hero">
+        <p className="brand-banner" aria-label="CONNECT">CONNECT</p>
+        <p className="brand-tagline">Understand your feelings. Find your next small step.</p>
+        <h1 className="hero__title">How are you feeling today?</h1>
+        <p className="hero__text">Choose your mood, explore a little, and find your happy moment.</p>
+      </section>
+
+      <section className="mood-grid" aria-label="Choose your mood">
+        {EMOTIONS.map((e) => (
+          <button
+            key={e.id}
+            type="button"
+            className="mood-card"
+            style={{ '--tint': e.tint }}
+            onClick={() => navigate(`/feel/${e.id}`)}
+          >
+            <span className="mood-card__emoji" aria-hidden="true">{e.emoji}</span>
+            <span className="mood-card__label">{e.label}</span>
+            <span className="mood-card__hint">{e.hint}</span>
+          </button>
+        ))}
+      </section>
+
+      <section className="benefits" aria-labelledby="benefits-heading">
+        <h2 id="benefits-heading" className="section-title">Small steps, at your own pace</h2>
+        <div className="benefits__grid">
+          <article className="card benefit">
+            <h3>Games for your mood</h3>
+            <p>Each feeling opens a few small activities. You choose what to try.</p>
+          </article>
+          <article className="card benefit">
+            <h3>Optional check-ins</h3>
+            <p>Save how you feel to My Mood when it helps. Skip it whenever you like.</p>
+          </article>
+          <article className="card benefit">
+            <h3>No pressure</h3>
+            <p>Nothing is scored, and there is no streak to keep up.</p>
+          </article>
+        </div>
+      </section>
+
+      <section className="card support-strip" aria-label="Urgent help">
+        <p>
+          Going through something difficult right now? You don't have to face it alone.{' '}
+          <Link to="/urgent-help">View helplines in Tamil Nadu</Link>
+        </p>
+      </section>
+
+      <p className="disclaimer">
+        CONNECT is a self-guided wellness tool. It is not a diagnosis or treatment and does not replace
+        professional care. Games are for play and reflection and cannot cure or guarantee any mood change.
+      </p>
+    </div>
+  );
+}
+
+return { default: Home, Home };
+})();
+
+// ---- components/ActivityCard ----
+const M_components_ActivityCard = (() => {
+
+
+// Shows one activity. "Try this" opens the guided activity and passes the
+// emotion along so the feedback step can offer "Try another activity".
+function ActivityCard({ activity, emotionId, saved, helpedBefore, onToggleSave }) {
+  return (
+    <article className="activity-card">
+      {helpedBefore && <span className="helped-badge">Helped you before</span>}
+      <h3 className="activity-card__title">{activity.name}</h3>
+      <p className="activity-card__desc">{activity.description}</p>
+      <p className="activity-card__meta">Estimated time: {activity.duration}</p>
+      <div className="activity-card__actions">
+        <Link to={`/activity/${activity.id}`} state={{ emotionId }} className="btn btn--primary">
+          Try this
+        </Link>
+        <button
+          type="button"
+          className="btn btn--ghost"
+          aria-pressed={saved}
+          onClick={() => onToggleSave(activity.id)}
+        >
+          {saved ? 'Saved for later' : 'Save for later'}
+        </button>
+      </div>
+    </article>
+  );
+}
+
+return { default: ActivityCard, ActivityCard };
+})();
+
+// ---- data/activities ----
+const M_data_activities = (() => {
+// Self-guided activities. Each activity has a `type` that maps to a guided
+// experience page (built in a later stage). Durations are estimates.
+const ACTIVITIES = {
+  counting: {
+    id: 'counting',
+    name: 'Counting Exercise',
+    description: 'Count slowly from 1 to 10 and let your attention settle on the numbers.',
+    duration: '2 min',
+  },
+  breathing: {
+    id: 'breathing',
+    name: 'Guided Breathing',
+    description: 'A gentle, comfortable breathing guide. You set the pace; nothing is forced.',
+    duration: '3 min',
+  },
+  grounding: {
+    id: 'grounding',
+    name: 'Grounding Exercise',
+    description: 'Notice your surroundings through your senses. Skip any step you like.',
+    duration: '4 min',
+  },
+  journaling: {
+    id: 'journaling',
+    name: 'Journaling',
+    description: 'Write a few honest lines about what is on your mind. You choose whether to save.',
+    duration: '5 min',
+  },
+  taskBreakdown: {
+    id: 'taskBreakdown',
+    name: 'Task Breakdown',
+    description: 'Split one task into small steps and pick only the first one.',
+    duration: '5 min',
+  },
+  creative: {
+    id: 'creative',
+    name: 'Creative Reset',
+    description: 'A small creative prompt to shift your focus for a few minutes.',
+    duration: '5 min',
+  },
+  movement: {
+    id: 'movement',
+    name: 'Gentle Movement',
+    description: 'Short, optional movement ideas. Only do what feels okay for your body today.',
+    duration: '3 min',
+  },
+  positive: {
+    id: 'positive',
+    name: 'Positive Reflection',
+    description: 'Recall one moment that felt good and note what made it so.',
+    duration: '3 min',
+  },
+  restBreak: {
+    id: 'restBreak',
+    name: 'Short Rest Break',
+    description: 'Step away from demands for a few minutes. Rest is a valid activity.',
+    duration: '5 min',
+  },
+  focusSession: {
+    id: 'focusSession',
+    name: 'Short Focus Session',
+    description: 'Work on one thing for a short, defined stretch, then pause.',
+    duration: '10 min',
+  },
+  trustedContact: {
+    id: 'trustedContact',
+    name: 'Reach Out to Someone You Trust',
+    description: 'Consider sharing how you feel with a person you trust. Optional.',
+    duration: 'Varies',
+  },
+};
+
+return { ACTIVITIES };
+})();
+
+// ---- utils/storage ----
+const M_utils_storage = (() => {
+// Small localStorage helpers. localStorage is NOT encrypted secure storage;
+// clearing browser data removes everything stored here.
+
+const STORAGE_KEYS = {
+  savedActivities: 'mindnest.savedActivities',
+  moodEntries: 'mindnest.moodEntries',
+  settings: 'mindnest.settings',
+  trustedContact: 'mindnest.trustedContact',
+  journal: 'mindnest.journal',
+  ratings: 'mindnest.ratings',
+};
+
+function loadJSON(key, fallback) {
+  try {
+    const raw = window.localStorage.getItem(key);
+    return raw === null ? fallback : JSON.parse(raw);
+  } catch {
+    // Corrupt or unavailable storage: fall back safely instead of crashing.
+    return fallback;
+  }
+}
+
+function saveJSON(key, value) {
+  try {
+    window.localStorage.setItem(key, JSON.stringify(value));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+return { STORAGE_KEYS, loadJSON, saveJSON };
+})();
+
+// ---- utils/ratings ----
+const M_utils_ratings = (() => {
+const { loadJSON, saveJSON, STORAGE_KEYS } = M_utils_storage;
+
+// Stores whether each activity helped, as the person reports it.
+// Shape: { [activityId]: { helped: number, notHelped: number } }
+
+function loadRatings() {
+  const r = loadJSON(STORAGE_KEYS.ratings, {});
+  return r && typeof r === 'object' && !Array.isArray(r) ? r : {};
+}
+
+function recordRating(activityId, helped) {
+  const ratings = loadRatings();
+  const current = ratings[activityId] || { helped: 0, notHelped: 0 };
+  ratings[activityId] = {
+    helped: current.helped + (helped ? 1 : 0),
+    notHelped: current.notHelped + (helped ? 0 : 1),
+  };
+  saveJSON(STORAGE_KEYS.ratings, ratings);
+  return ratings;
+}
+
+function helpfulScore(ratings, activityId) {
+  const r = ratings[activityId];
+  return r ? r.helped - r.notHelped : 0;
+}
+
+return { loadRatings, recordRating, helpfulScore };
+})();
+
+// ---- utils/recommendations ----
+const M_utils_recommendations = (() => {
+const { ACTIVITIES } = M_data_activities;
+const { loadRatings, helpfulScore } = M_utils_ratings;
+
+// Rule-based recommendations. Each emotion maps to an ordered list of activity
+// ids. No AI is involved. The first items are shown first.
+const RULES = {
+  stressed: ['breathing', 'counting', 'journaling', 'movement'],
+  anxious: ['grounding', 'breathing', 'taskBreakdown', 'counting'],
+  sad: ['journaling', 'creative', 'positive', 'trustedContact'],
+  angry: ['restBreak', 'breathing', 'journaling', 'movement'],
+  overwhelmed: ['taskBreakdown', 'restBreak', 'focusSession', 'counting'],
+  exhausted: ['restBreak', 'movement', 'grounding', 'breathing'],
+  numb: ['grounding', 'creative', 'movement', 'trustedContact'],
+  happy: ['positive', 'journaling', 'creative', 'focusSession'],
+  calm: ['positive', 'journaling', 'creative', 'focusSession'],
+  motivated: ['taskBreakdown', 'focusSession', 'positive', 'journaling'],
+};
+
+/**
+ * Returns the activities for an emotion, skipping any ids in `exclude`.
+ * Used for "Show different activities" and skip options.
+ */
+// Activities the person found helpful move up. Ties keep the rule order.
+function getActivitiesForEmotion(emotionId, exclude = []) {
+  const ratings = loadRatings();
+  const ids = RULES[emotionId] ?? [];
+  return ids
+    .map((id, index) => ({ activity: ACTIVITIES[id], index }))
+    .filter(({ activity }) => activity && !exclude.includes(activity.id))
+    .sort(
+      (a, b) =>
+        helpfulScore(ratings, b.activity.id) - helpfulScore(ratings, a.activity.id) || a.index - b.index
+    )
+    .map(({ activity }) => activity);
+}
+
+/**
+ * Returns the next batch of activities after the ones already shown.
+ * If everything has been shown, it cycles back to the start.
+ */
+function getDifferentActivities(emotionId, shownIds = []) {
+  const all = getActivitiesForEmotion(emotionId);
+  const fresh = all.filter((a) => !shownIds.includes(a.id));
+  return fresh.length > 0 ? fresh : all;
+}
+
+return { getActivitiesForEmotion, getDifferentActivities };
+})();
+
+// ---- pages/Recommendations ----
+const M_pages_Recommendations = (() => {
+
+
+const ActivityCard = M_components_ActivityCard.default;
+const { getEmotion, EMOTIONS } = M_data_emotions;
+const { getActivitiesForEmotion, getDifferentActivities } = M_utils_recommendations;
+const { loadJSON, saveJSON, STORAGE_KEYS } = M_utils_storage;
+const { loadRatings } = M_utils_ratings;
+
+function Recommendations() {
+  const { emotionId } = useParams();
+  const navigate = useNavigate();
+  const emotion = getEmotion(emotionId);
+
+  // Activities currently shown, and which have been shown (for "show different").
+  const [shown, setShown] = useState(() =>
+    emotion ? getActivitiesForEmotion(emotion.id) : []
+  );
+  const [shownIds, setShownIds] = useState(() => shown.map((a) => a.id));
+  const [savedIds, setSavedIds] = useState(() => loadJSON(STORAGE_KEYS.savedActivities, []));
+
+  if (!emotion) {
+    return (
+      <div className="page">
+        <div className="card">
+          <h1>We couldn't find that feeling.</h1>
+          <p>Choose one from the list to see activities.</p>
+          <Link to="/" className="btn btn--primary">Back to emotion selection</Link>
+        </div>
+      </div>
+    );
+  }
+
+  function toggleSave(activityId) {
+    const next = savedIds.includes(activityId)
+      ? savedIds.filter((id) => id !== activityId)
+      : [...savedIds, activityId];
+    setSavedIds(next);
+    saveJSON(STORAGE_KEYS.savedActivities, next);
+  }
+
+  function showDifferent() {
+    const next = getDifferentActivities(emotion.id, shownIds);
+    setShown(next);
+    setShownIds((prev) => [...new Set([...prev, ...next.map((a) => a.id)])]);
+  }
+
+  return (
+    <div className="page">
+      <nav className="breadcrumb" aria-label="Breadcrumb">
+        <button type="button" className="btn btn--ghost" onClick={() => navigate(-1)}>
+          ← Back
+        </button>
+      </nav>
+
+      <header className="page-header">
+        <p className="eyebrow">Feeling {emotion.label.toLowerCase()}</p>
+        <h1>Gentle activities for right now</h1>
+        <p className="section-subtitle">
+          These are suggestions, not instructions. Pick one, change it, or skip them all.
+        </p>
+      </header>
+
+      <div className="activity-grid">
+        {shown.map((activity) => (
+          <ActivityCard
+            key={activity.id}
+            activity={activity}
+            emotionId={emotion.id}
+            helpedBefore={(loadRatings()[activity.id]?.helped ?? 0) > 0}
+            saved={savedIds.includes(activity.id)}
+            onToggleSave={toggleSave}
+          />
+        ))}
+      </div>
+
+      <div className="page-actions">
+        <button type="button" className="btn btn--ghost" onClick={showDifferent}>
+          Show different activities
+        </button>
+        <Link to="/" className="btn btn--ghost">Choose another emotion</Link>
+        <Link to="/urgent-help" className="btn btn--urgent-soft">I need urgent help</Link>
+      </div>
+
+      <p className="muted">
+        Feeling like none of these fit? You can choose another emotion any time. Nothing here is required.
+      </p>
+
+      {/* Hidden helper for screen readers: list of all emotions is on the home page. */}
+      <span className="sr-only">{EMOTIONS.length} emotion options are available on the home page.</span>
+    </div>
+  );
+}
+
+return { default: Recommendations, Recommendations };
+})();
+
+// ---- components/HelplineCard ----
+const M_components_HelplineCard = (() => {
+// One helpline card. The call link is a plain tel: link. It only opens the
+// phone dialer when the user taps it; nothing is dialed automatically.
+function HelplineCard({ line }) {
+  return (
+    <article className={`helpline-card helpline-card--${line.category}`}>
+      <p className="helpline-card__type">{line.serviceType}</p>
+      <h3 className="helpline-card__name">{line.name}</h3>
+      <p className="helpline-card__number" aria-label={`Number ${line.number.split('').join(' ')}`}>
+        {line.number}
+      </p>
+      <p className="helpline-card__purpose">{line.purpose}</p>
+      {line.availability && <p className="helpline-card__avail">{line.availability}</p>}
+      <a href={`tel:${line.number}`} className="btn btn--call">
+        Call {line.number}
+      </a>
+    </article>
+  );
+}
+
+return { default: HelplineCard, HelplineCard };
+})();
+
+// ---- data/helplines ----
+const M_data_helplines = (() => {
+// Helplines from the project spec. Verify numbers, availability, and
+// descriptions against official sources before deployment (see README).
+const HELPLINES = [
+  {
+    id: 'tele-manas',
+    number: '14416',
+    name: 'TELE-MANAS',
+    serviceType: 'Government of India mental health helpline',
+    availability: 'Free, 24/7 support, subject to official service confirmation.',
+    purpose: 'Mental health support for emotional distress, anxiety, depression, suicidal thoughts, and related concerns.',
+    category: 'mental-health',
+  },
+  {
+    id: 'ambulance',
+    number: '108',
+    name: 'Emergency Ambulance',
+    serviceType: 'Emergency ambulance service',
+    purpose: 'Immediate medical emergencies or situations requiring urgent medical assistance.',
+    category: 'ambulance',
+  },
+  {
+    id: 'emergency',
+    number: '112',
+    name: 'Emergency Response',
+    serviceType: 'Emergency response service',
+    purpose: 'Immediate safety emergencies or situations involving imminent danger.',
+    category: 'emergency',
+  },
+  {
+    id: 'tn-health',
+    number: '104',
+    name: 'Tamil Nadu Health Helpline',
+    serviceType: 'Tamil Nadu state health helpline',
+    purpose: 'Health-related guidance and available counselling support, including stress-related concerns.',
+    category: 'state-health',
+  },
+];
+
+const URGENT_DISCLAIMER =
+  'MindNest is not an emergency service. This website cannot contact emergency services on your behalf or guarantee that someone will respond. If you are in immediate danger, contact emergency services directly.';
+
+return { HELPLINES, URGENT_DISCLAIMER };
+})();
+
+// ---- pages/UrgentHelp ----
+const M_pages_UrgentHelp = (() => {
+
+const HelplineCard = M_components_HelplineCard.default;
+const { HELPLINES, URGENT_DISCLAIMER } = M_data_helplines;
+
+function UrgentHelp() {
+  return (
+    <div className="page page--urgent">
+      <header className="urgent-hero">
+        <h1>You don't have to face this moment alone.</h1>
+        <p>
+          If you're going through a difficult moment, support is available. You can reach out to a helpline
+          or emergency service for help.
+        </p>
+      </header>
+
+      <div className="card urgent-disclaimer" role="note">
+        <p>{URGENT_DISCLAIMER}</p>
+      </div>
+
+      <section aria-labelledby="helplines-heading">
+        <h2 id="helplines-heading" className="section-title">Mental Health Helplines in Tamil Nadu</h2>
+        <div className="helpline-grid">
+          {HELPLINES.map((line) => (
+            <HelplineCard key={line.id} line={line} />
+          ))}
+        </div>
+      </section>
+
+      <section className="card urgent-options" aria-labelledby="options-heading">
+        <h2 id="options-heading" className="section-title">Other ways to get support</h2>
+        <ul className="plain-list">
+          <li>
+            Reach out to a trusted person. You can save one in Settings (coming in a later stage) and use it
+            to call or prepare a message.
+          </li>
+          <li>
+            Optional: a short <Link to="/activities/anxious">grounding exercise</Link> can help you settle.
+            It is here only if you want it. Please call a helpline or emergency service first if you feel
+            unsafe.
+          </li>
+        </ul>
+      </section>
+    </div>
+  );
+}
+
+return { default: UrgentHelp, UrgentHelp };
+})();
+
+// ---- data/activityContent ----
+const M_data_activityContent = (() => {
+// Text content for the guided activities. Kept separate from the UI so it is
+// easy to review and edit. Nothing here is generated by AI.
+
+const GROUNDING_STEPS = [
+  { sense: 'See', prompt: 'Name 5 things you can see around you. Take your time.' },
+  { sense: 'Touch', prompt: 'Notice 4 things you can feel, like your feet on the floor or the fabric of your clothes.' },
+  { sense: 'Hear', prompt: 'Notice 3 sounds near you or farther away.' },
+  { sense: 'Smell', prompt: 'Notice 2 smells. If you can’t notice any, think of a smell you like.' },
+  { sense: 'Taste', prompt: 'Notice 1 taste, or take a sip of water if you’d like.' },
+];
+
+const JOURNAL_PROMPT =
+  'What is on your mind right now? Write as much or as little as you like. Nothing needs to be neat or finished.';
+
+const CREATIVE_PROMPTS = [
+  'Describe a place you would like to be right now, using all five senses.',
+  'Doodle or sketch something simple on paper. It doesn’t need to look like anything.',
+  'Write three words that describe the color of this moment.',
+  'Hum or sing a song you know by heart, or a few lines of it.',
+  'Name an everyday object near you and describe it as if you were seeing it for the first time.',
+];
+
+const MOVEMENT_OPTIONS = [
+  'Roll your shoulders slowly, forward and then back.',
+  'Stretch your neck gently from side to side, only as far as feels comfortable.',
+  'Stand up and take a short walk around your room or a quiet space.',
+  'Stretch your arms up overhead, or reach down toward your knees if that feels better.',
+  'Sit comfortably and wiggle your fingers and toes for a few seconds.',
+];
+
+const MOVEMENT_NOTE =
+  'Only do what feels okay for your body today. If a movement causes pain or discomfort, skip it. Sitting still counts too.';
+
+const POSITIVE_PROMPT =
+  'Think of one small moment from recently that felt good, even slightly. What was happening?';
+
+// Simple step lists for activities that do not have their own screen.
+const GENERIC_STEPS = {
+  restBreak: {
+    title: 'Short Rest Break',
+    intro: 'Rest is a valid activity. Take as long as you need, and you can stop at any point.',
+    steps: [
+      'Step away from your screen or current task if you can.',
+      'Sit or lie down somewhere comfortable.',
+      'Let your body be still for a few minutes. No goal needed.',
+      'When you’re ready, notice how the room feels around you.',
+    ],
+  },
+  focusSession: {
+    title: 'Short Focus Session',
+    intro: 'Work on one thing for a short, defined stretch, then pause. You decide when to stop.',
+    steps: [
+      'Pick one small task you can finish in about 10 minutes.',
+      'Set a gentle timer for 10 minutes, or simply begin.',
+      'Work on that one thing only. Don’t worry about the rest yet.',
+      'When the time is up, pause and notice what you got done, however small.',
+    ],
+  },
+  trustedContact: {
+    title: 'Reach Out to Someone You Trust',
+    intro: 'This is optional. Sharing how you feel with someone you trust can help. Only do it if it feels right.',
+    steps: [
+      'Think of one person you feel safe with.',
+      'You could send them a short message, such as "I’m having a hard day. Can we talk later?"',
+      'You don’t have to explain everything. A sentence is enough.',
+      'If you need to talk to someone right away, use the urgent help page.',
+    ],
+  },
+};
+
+return { GROUNDING_STEPS, JOURNAL_PROMPT, CREATIVE_PROMPTS, MOVEMENT_OPTIONS, MOVEMENT_NOTE, POSITIVE_PROMPT, GENERIC_STEPS };
+})();
+
+// ---- components/activities/CountingActivity ----
+const M_components_activities_CountingActivity = (() => {
+
+
+// Counts 1 to 10. The page wrapper provides the Stop control.
+function CountingActivity({ onFinish }) {
+  const [n, setN] = useState(1);
+  const isLast = n === 10;
+
+  return (
+    <section className="activity-body" aria-label="Counting exercise">
+      <p className="progress-text">Step {n} of 10</p>
+      <div className="big-number" aria-live="polite">{n}</div>
+      <p className="muted">Count slowly. Let each number be enough.</p>
+      <div className="page-actions">
+        <button
+          type="button"
+          className="btn btn--primary"
+          onClick={() => (isLast ? onFinish() : setN(n + 1))}
+        >
+          {isLast ? 'Finish' : 'Next'}
+        </button>
+      </div>
+    </section>
+  );
+}
+
+return { default: CountingActivity, CountingActivity };
+})();
+
+// ---- components/activities/BreathingActivity ----
+const M_components_activities_BreathingActivity = (() => {
+
+
+// Gentle breathing: 4 seconds in, 6 seconds out. No breath holds.
+// The circle animation is turned off by the reduced-motion setting in CSS.
+const IN_MS = 4000;
+const OUT_MS = 6000;
+
+function BreathingActivity({ onFinish }) {
+  const [phase, setPhase] = useState('in');
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (paused) return undefined;
+    const timer = setTimeout(
+      () => setPhase((p) => (p === 'in' ? 'out' : 'in')),
+      phase === 'in' ? IN_MS : OUT_MS
+    );
+    return () => clearTimeout(timer);
+  }, [phase, paused]);
+
+  return (
+    <section className="activity-body" aria-label="Guided breathing">
+      <div
+        className={`breath-circle is-${phase}${paused ? ' is-paused' : ''}`}
+        aria-hidden="true"
+      />
+      <p className="breath-label" aria-live="polite">
+        {paused ? 'Paused. Breathe however feels comfortable.' : phase === 'in' ? 'Breathe in gently' : 'Breathe out slowly'}
+      </p>
+      <p className="muted">Breathe at a pace that feels comfortable. You can stop anytime.</p>
+      <div className="page-actions">
+        <button type="button" className="btn btn--ghost" onClick={() => setPaused((p) => !p)}>
+          {paused ? 'Resume' : 'Pause'}
+        </button>
+        <button type="button" className="btn btn--primary" onClick={onFinish}>
+          Finish
+        </button>
+      </div>
+    </section>
+  );
+}
+
+return { default: BreathingActivity, BreathingActivity };
+})();
+
+// ---- components/activities/GroundingActivity ----
+const M_components_activities_GroundingActivity = (() => {
+
+const { GROUNDING_STEPS } = M_data_activityContent;
+
+// Walks through the five senses. Every step can be skipped.
+function GroundingActivity({ onFinish }) {
+  const [index, setIndex] = useState(0);
+  const total = GROUNDING_STEPS.length;
+  const step = GROUNDING_STEPS[index];
+  const isLast = index === total - 1;
+
+  function advance() {
+    if (isLast) onFinish();
+    else setIndex(index + 1);
+  }
+
+  return (
+    <section className="activity-body" aria-label="Grounding exercise">
+      <p className="progress-text">Step {index + 1} of {total}</p>
+      <h2 className="sense-title">{step.sense}</h2>
+      <p>{step.prompt}</p>
+      <div className="page-actions">
+        <button type="button" className="btn btn--ghost" onClick={advance}>
+          Skip this step
+        </button>
+        <button type="button" className="btn btn--primary" onClick={advance}>
+          {isLast ? 'Finish' : 'Next'}
+        </button>
+      </div>
+    </section>
+  );
+}
+
+return { default: GroundingActivity, GroundingActivity };
+})();
+
+// ---- components/activities/JournalActivity ----
+const M_components_activities_JournalActivity = (() => {
+
+const { JOURNAL_PROMPT } = M_data_activityContent;
+const { loadJSON, saveJSON, STORAGE_KEYS } = M_utils_storage;
+
+// Writing area. Entries are saved ONLY when the user taps Save entry,
+// and only in this browser's localStorage.
+function JournalActivity({ onFinish }) {
+  const [text, setText] = useState('');
+  const [saved, setSaved] = useState(false);
+  const [error, setError] = useState('');
+
+  function handleSave() {
+    if (!text.trim()) {
+      setError('Write a few words first, or choose "Continue without saving".');
+      return;
+    }
+    const entries = loadJSON(STORAGE_KEYS.journal, []);
+    const ok = saveJSON(STORAGE_KEYS.journal, [
+      ...entries,
+      { id: Date.now().toString(), text: text.trim(), createdAt: new Date().toISOString() },
+    ]);
+    if (!ok) {
+      setError('This entry could not be saved in your browser. You can copy it somewhere safe.');
+      return;
+    }
+    setError('');
+    setSaved(true);
+  }
+
+  return (
+    <section className="activity-body" aria-label="Journaling">
+      <label htmlFor="journal-text" className="field-label">{JOURNAL_PROMPT}</label>
+      <textarea
+        id="journal-text"
+        className="textarea"
+        rows={7}
+        value={text}
+        onChange={(e) => {
+          setText(e.target.value);
+          setSaved(false);
+        }}
+        aria-describedby="journal-note"
+      />
+      <p id="journal-note" className="muted">
+        Saving stores this entry only in this browser, on this device. It is not sent anywhere. Clearing your
+        browser data will remove it.
+      </p>
+      {error && <p className="form-error" role="alert">{error}</p>}
+      {saved && <p className="form-success" role="status">Saved on this device.</p>}
+
+      <div className="page-actions">
+        <button type="button" className="btn btn--primary" onClick={handleSave}>
+          Save entry
+        </button>
+        <button type="button" className="btn btn--ghost" onClick={() => { setText(''); setSaved(false); setError(''); }}>
+          Clear text
+        </button>
+        <button type="button" className="btn btn--ghost" onClick={onFinish}>
+          Continue without saving
+        </button>
+      </div>
+      {saved && (
+        <div className="page-actions">
+          <button type="button" className="btn btn--primary" onClick={onFinish}>
+            Finish
+          </button>
+        </div>
+      )}
+    </section>
+  );
+}
+
+return { default: JournalActivity, JournalActivity };
+})();
+
+// ---- components/activities/TaskBreakdownActivity ----
+const M_components_activities_TaskBreakdownActivity = (() => {
+
+
+// Break one task into small steps. Works fully without AI.
+// Steps live in this screen's memory only; they are cleared when you leave.
+let nextId = 1;
+const newStep = (text) => ({ id: nextId++, text, done: false });
+
+function TaskBreakdownActivity({ onFinish }) {
+  const [task, setTask] = useState('');
+  const [taskSet, setTaskSet] = useState(false);
+  const [steps, setSteps] = useState([]);
+  const [draft, setDraft] = useState('');
+  const [editingId, setEditingId] = useState(null);
+  const [editText, setEditText] = useState('');
+
+  const doneCount = steps.filter((s) => s.done).length;
+
+  function startWithTask(e) {
+    e.preventDefault();
+    if (!task.trim()) return;
+    setTaskSet(true);
+  }
+
+  function addStep(e) {
+    e.preventDefault();
+    if (!draft.trim()) return;
+    setSteps([...steps, newStep(draft.trim())]);
+    setDraft('');
+  }
+
+  function toggleDone(id) {
+    setSteps(steps.map((s) => (s.id === id ? { ...s, done: !s.done } : s)));
+  }
+
+  function removeStep(id) {
+    setSteps(steps.filter((s) => s.id !== id));
+    if (editingId === id) setEditingId(null);
+  }
+
+  function saveEdit(id) {
+    if (!editText.trim()) return;
+    setSteps(steps.map((s) => (s.id === id ? { ...s, text: editText.trim() } : s)));
+    setEditingId(null);
+  }
+
+  if (!taskSet) {
+    return (
+      <section className="activity-body" aria-label="Task breakdown">
+        <form onSubmit={startWithTask} className="stack">
+          <label htmlFor="task-input" className="field-label">What task feels like a lot right now?</label>
+          <input
+            id="task-input"
+            className="input"
+            value={task}
+            onChange={(e) => setTask(e.target.value)}
+            placeholder="For example: Prepare for my presentation"
+          />
+          <div className="page-actions">
+            <button type="submit" className="btn btn--primary" disabled={!task.trim()}>
+              Break it down
+            </button>
+          </div>
+        </form>
+      </section>
+    );
+  }
+
+  return (
+    <section className="activity-body" aria-label="Task breakdown">
+      <p className="field-label">Task: {task}</p>
+      <p className="muted">
+        Add small steps. Pick the first one and ignore the rest for now. {steps.length > 0 && `${doneCount} of ${steps.length} done.`}
+      </p>
+
+      <form onSubmit={addStep} className="inline-form">
+        <label htmlFor="step-input" className="sr-only">Add a step</label>
+        <input
+          id="step-input"
+          className="input"
+          value={draft}
+          onChange={(e) => setDraft(e.target.value)}
+          placeholder="Add a small step"
+        />
+        <button type="submit" className="btn btn--primary" disabled={!draft.trim()}>Add step</button>
+      </form>
+
+      {steps.length === 0 && <p className="muted">No steps yet. Start with the smallest thing you can do.</p>}
+
+      <ul className="step-list">
+        {steps.map((s) => (
+          <li key={s.id} className={`step-item${s.done ? ' is-done' : ''}`}>
+            <label className="step-check">
+              <input type="checkbox" checked={s.done} onChange={() => toggleDone(s.id)} />
+              {editingId === s.id ? (
+                <input
+                  className="input"
+                  aria-label="Edit step"
+                  value={editText}
+                  onChange={(e) => setEditText(e.target.value)}
+                />
+              ) : (
+                <span className="step-text">{s.text}</span>
+              )}
+            </label>
+            <div className="step-actions">
+              {editingId === s.id ? (
+                <button type="button" className="btn btn--ghost" onClick={() => saveEdit(s.id)}>Save</button>
+              ) : (
+                <button
+                  type="button"
+                  className="btn btn--ghost"
+                  onClick={() => { setEditingId(s.id); setEditText(s.text); }}
+                >
+                  Edit
+                </button>
+              )}
+              <button type="button" className="btn btn--ghost" onClick={() => removeStep(s.id)}>Delete</button>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <div className="page-actions">
+        <button type="button" className="btn btn--primary" onClick={onFinish}>Finish</button>
+      </div>
+    </section>
+  );
+}
+
+return { default: TaskBreakdownActivity, TaskBreakdownActivity };
+})();
+
+// ---- components/activities/CreativeActivity ----
+const M_components_activities_CreativeActivity = (() => {
+
+const { CREATIVE_PROMPTS } = M_data_activityContent;
+
+function pickIndex(exclude) {
+  let i = Math.floor(Math.random() * CREATIVE_PROMPTS.length);
+  if (CREATIVE_PROMPTS.length > 1 && i === exclude) i = (i + 1) % CREATIVE_PROMPTS.length;
+  return i;
+}
+
+function CreativeActivity({ onFinish }) {
+  const [index, setIndex] = useState(() => pickIndex(-1));
+
+  return (
+    <section className="activity-body" aria-label="Creative reset">
+      <p className="field-label">A small creative prompt</p>
+      <p className="prompt-text">{CREATIVE_PROMPTS[index]}</p>
+      <p className="muted">There is no right way to do this. It can be done in your head or on paper.</p>
+      <div className="page-actions">
+        <button type="button" className="btn btn--ghost" onClick={() => setIndex(pickIndex(index))}>
+          Another prompt
+        </button>
+        <button type="button" className="btn btn--primary" onClick={onFinish}>Finish</button>
+      </div>
+    </section>
+  );
+}
+
+return { default: CreativeActivity, CreativeActivity };
+})();
+
+// ---- components/activities/MovementActivity ----
+const M_components_activities_MovementActivity = (() => {
+const { MOVEMENT_OPTIONS, MOVEMENT_NOTE } = M_data_activityContent;
+
+// Optional movement ideas. Nothing here is required, and every item can be skipped.
+function MovementActivity({ onFinish }) {
+  return (
+    <section className="activity-body" aria-label="Gentle movement">
+      <p className="muted">{MOVEMENT_NOTE}</p>
+      <ul className="plain-list">
+        {MOVEMENT_OPTIONS.map((m) => (
+          <li key={m}>{m}</li>
+        ))}
+      </ul>
+      <div className="page-actions">
+        <button type="button" className="btn btn--primary" onClick={onFinish}>Finish</button>
+      </div>
+    </section>
+  );
+}
+
+return { default: MovementActivity, MovementActivity };
+})();
+
+// ---- components/activities/PositiveActivity ----
+const M_components_activities_PositiveActivity = (() => {
+
+const { POSITIVE_PROMPT } = M_data_activityContent;
+
+// Optional reflection. Text is not saved anywhere in this version.
+function PositiveActivity({ onFinish }) {
+  const [text, setText] = useState('');
+
+  return (
+    <section className="activity-body" aria-label="Positive reflection">
+      <label htmlFor="positive-text" className="field-label">{POSITIVE_PROMPT}</label>
+      <textarea
+        id="positive-text"
+        className="textarea"
+        rows={5}
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        placeholder="Optional. Write as much or as little as you like."
+      />
+      <p className="muted">This reflection is not saved in this version. It stays on your screen only.</p>
+      <div className="page-actions">
+        <button type="button" className="btn btn--primary" onClick={onFinish}>Finish</button>
+      </div>
+    </section>
+  );
+}
+
+return { default: PositiveActivity, PositiveActivity };
+})();
+
+// ---- components/activities/GenericActivity ----
+const M_components_activities_GenericActivity = (() => {
+// Simple step-by-step screen for activities without their own guide
+// (rest break, focus session, reaching out to a trusted person).
+function GenericActivity({ content, onFinish }) {
+  return (
+    <section className="activity-body" aria-label={content.title}>
+      <p className="muted">{content.intro}</p>
+      <ol className="plain-list">
+        {content.steps.map((s) => (
+          <li key={s}>{s}</li>
+        ))}
+      </ol>
+      <div className="page-actions">
+        <button type="button" className="btn btn--primary" onClick={onFinish}>Finish</button>
+      </div>
+    </section>
+  );
+}
+
+return { default: GenericActivity, GenericActivity };
+})();
+
+// ---- components/FeedbackStep ----
+const M_components_FeedbackStep = (() => {
+
+
+const { recordRating } = M_utils_ratings;
+
+const OPTIONS = [
+  { id: 'better', label: 'I feel better.' },
+  { id: 'a-little-better', label: 'I feel a little better.' },
+  { id: 'same', label: 'I feel the same.' },
+  { id: 'worse', label: 'I feel worse.' },
+  { id: 'rather-not', label: 'I’d rather not say.' },
+];
+
+// Messages shown after a choice. They never say the activity helped unless the
+// person says so, and they never imply failure.
+const RESPONSES = {
+  better: 'I’m glad this helped. You can finish here, or try another activity.',
+  'a-little-better': 'That’s a good sign. You can stop here, or continue with another activity if you like.',
+  same: 'That’s okay. Some moments need a different approach. You might like to try another activity.',
+  worse: 'I’m sorry it feels harder right now. You can stop now. If you need support, please reach out to someone now.',
+  'rather-not': 'That’s completely fine. You don’t have to share anything.',
+};
+
+function FeedbackStep({ emotionId, activityId }) {
+  const [choice, setChoice] = useState(null);
+  const [rated, setRated] = useState(null);
+  const anotherLink = emotionId ? `/activities/${emotionId}` : '/';
+
+  function rate(helped) {
+    if (activityId) recordRating(activityId, helped);
+    setRated(helped);
+  }
+
+  return (
+    <section className="card feedback" aria-labelledby="feedback-heading">
+      <h2 id="feedback-heading" className="section-title">How are you feeling now?</h2>
+      <p className="section-subtitle">Optional. Choose one, or skip it.</p>
+
+      <div className="feedback-options" role="group" aria-label="How you feel now">
+        {OPTIONS.map((o) => (
+          <button
+            key={o.id}
+            type="button"
+            className={`feedback-option${choice === o.id ? ' is-selected' : ''}`}
+            aria-pressed={choice === o.id}
+            onClick={() => setChoice(o.id)}
+          >
+            {o.label}
+          </button>
+        ))}
+      </div>
+
+      {choice && <p className="feedback-response" role="status">{RESPONSES[choice]}</p>}
+
+      {choice && activityId && (
+        <div className="rating-block">
+          <p className="field-label">Did this activity help you?</p>
+          {rated === null ? (
+            <div className="page-actions">
+              <button type="button" className="btn btn--primary" onClick={() => rate(true)}>Yes, it helped</button>
+              <button type="button" className="btn btn--ghost" onClick={() => rate(false)}>Not really</button>
+            </div>
+          ) : (
+            <p className="form-success" role="status">
+              Thanks. Your answer is saved on this device and will shape future suggestions.
+            </p>
+          )}
+        </div>
+      )}
+
+      <div className="page-actions">
+        <Link to="/" className="btn btn--primary">Finish for now</Link>
+        <Link to={anotherLink} className="btn btn--ghost">Try another activity</Link>
+        <Link to="/" className="btn btn--ghost">Return home</Link>
+        <Link to="/urgent-help" className={`btn ${choice === 'worse' ? 'btn--urgent' : 'btn--urgent-soft'}`}>
+          Get urgent help
+        </Link>
+      </div>
+    </section>
+  );
+}
+
+return { default: FeedbackStep, FeedbackStep };
+})();
+
+// ---- pages/ActivityPage ----
+const M_pages_ActivityPage = (() => {
+
+
+const { ACTIVITIES } = M_data_activities;
+const { GENERIC_STEPS } = M_data_activityContent;
+const CountingActivity = M_components_activities_CountingActivity.default;
+const BreathingActivity = M_components_activities_BreathingActivity.default;
+const GroundingActivity = M_components_activities_GroundingActivity.default;
+const JournalActivity = M_components_activities_JournalActivity.default;
+const TaskBreakdownActivity = M_components_activities_TaskBreakdownActivity.default;
+const CreativeActivity = M_components_activities_CreativeActivity.default;
+const MovementActivity = M_components_activities_MovementActivity.default;
+const PositiveActivity = M_components_activities_PositiveActivity.default;
+const GenericActivity = M_components_activities_GenericActivity.default;
+const FeedbackStep = M_components_FeedbackStep.default;
+
+// Maps each activity id to its guided screen.
+const SCREENS = {
+  counting: CountingActivity,
+  breathing: BreathingActivity,
+  grounding: GroundingActivity,
+  journaling: JournalActivity,
+  taskBreakdown: TaskBreakdownActivity,
+  creative: CreativeActivity,
+  movement: MovementActivity,
+  positive: PositiveActivity,
+};
+
+function ActivityPage() {
+  const { activityId } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const activity = ACTIVITIES[activityId];
+  const emotionId = location.state?.emotionId ?? null;
+
+  // 'activity' while the person is doing it, 'feedback' once they finish or stop.
+  const [stage, setStage] = useState('activity');
+
+  if (!activity) {
+    return (
+      <div className="page">
+        <div className="card">
+          <h1>We couldn't find that activity.</h1>
+          <Link to="/" className="btn btn--primary">Return home</Link>
+        </div>
+      </div>
+    );
+  }
+
+  const Screen = SCREENS[activity.id];
+  const generic = GENERIC_STEPS[activity.id];
+  const end = () => setStage('feedback');
+
+  return (
+    <div className="page">
+      <div className="page-actions">
+        <button type="button" className="btn btn--ghost" onClick={() => navigate(-1)}>← Back</button>
+      </div>
+
+      <header className="page-header">
+        <p className="eyebrow">{activity.duration}</p>
+        <h1>{activity.name}</h1>
+      </header>
+
+      {stage === 'activity' ? (
+        <>
+          <div className="card activity-panel">
+            {Screen ? <Screen onFinish={end} /> : <GenericActivity content={generic} onFinish={end} />}
+          </div>
+          <div className="page-actions">
+            <button type="button" className="btn btn--ghost" onClick={end}>Stop</button>
+            <span className="muted">You can stop at any point. Nothing is required.</span>
+          </div>
+        </>
+      ) : (
+        <FeedbackStep emotionId={emotionId} activityId={activity.id} />
+      )}
+    </div>
+  );
+}
+
+return { default: ActivityPage, ActivityPage };
+})();
+
+// ---- pages/NotFound ----
+const M_pages_NotFound = (() => {
+
+
+function NotFound() {
+  return (
+    <div className="page">
+      <div className="card">
+        <h1>This page isn't here.</h1>
+        <p>Nothing to worry about. You can head back home.</p>
+        <Link to="/" className="btn btn--primary">Return home</Link>
+      </div>
+    </div>
+  );
+}
+
+return { default: NotFound, NotFound };
+})();
+
+// ---- data/experiences ----
+const M_data_experiences = (() => {
+// Which games each mood opens, in order. "Let's Play" starts the first one;
+// "Try Another Activity" moves to the next. Every mood has at least two options.
+const EXPERIENCES = {
+  stressed: ['popBubbles', 'breathingBubble', 'garden'],
+  anxious: ['breathingBubble', 'colorGame', 'grounding'],
+  sad: ['moodMatch', 'garden', 'kindWords'],
+  angry: ['tapRelease', 'breathingBubble', 'colorGame'],
+  overwhelmed: ['oneStep', 'breathingBubble', 'restTimer'],
+  exhausted: ['breathingBubble', 'floatingShapes', 'restTimer'],
+  numb: ['sensory', 'garden', 'colorGame'],
+  happy: ['confetti', 'happyMemory', 'moodMatch'],
+  calm: ['floatingShapes', 'garden', 'colorGame'],
+  motivated: ['goalGame', 'fiveMinute', 'confetti'],
+};
+
+const EXPERIENCE_TITLES = {
+  popBubbles: 'Pop the bubbles',
+  breathingBubble: 'Breathing bubble',
+  garden: 'Virtual garden',
+  colorGame: 'Calm colouring',
+  grounding: 'Grounding challenge',
+  moodMatch: 'Mood match',
+  kindWords: 'Kind words',
+  tapRelease: 'Tap to release',
+  oneStep: 'One step at a time',
+  restTimer: 'Short rest timer',
+  floatingShapes: 'Floating shapes',
+  sensory: 'Sensory explore',
+  confetti: 'Confetti celebration',
+  happyMemory: 'Happy-memory journal',
+  fiveMinute: 'Five-minute challenge',
+  goalGame: 'Goal game',
+};
+
+// Friendly, non-judgmental messages. None of them promise a cure or a mood change.
+const MOOD_MESSAGES = {
+  stressed: 'That sounds like a lot is pressing on you right now. You\u2019re allowed to take the pressure down a notch.',
+  anxious: 'Anxious feelings can feel loud. Let’s slow things down together, one small thing at a time.',
+  sad: 'It’s okay to feel low. You don’t have to feel better right away, and you don’t have to explain it.',
+  angry: 'Anger often means something matters to you. Let’s let some of it out safely.',
+  overwhelmed: 'When everything piles up, it helps to shrink the list. Let’s find just one small step.',
+  exhausted: 'Feeling tired is your body asking for care. A little rest is a good place to start.',
+  numb: 'Sometimes feelings feel far away. That’s okay. We can gently notice the world around you.',
+  happy: 'It’s lovely to feel happy. Let’s take a moment to enjoy it and remember it.',
+  calm: 'You feel settled right now. Let’s enjoy this calm for a little while.',
+  motivated: 'You have energy to move forward. Let’s turn it into small, doable wins.',
+};
+
+// Emoji answers for the "How are you feeling now?" step.
+const FEELING_OPTIONS = [
+  { id: 'better', emoji: '😊', label: 'I feel better' },
+  { id: 'little', emoji: '🙂', label: 'A little better' },
+  { id: 'same', emoji: '😐', label: 'About the same' },
+  { id: 'worse', emoji: '😣', label: 'I feel worse' },
+  { id: 'rather', emoji: '🤐', label: 'I’d rather not say' },
+];
+
+const FEELING_RESPONSES = {
+  better: 'I’m glad this felt good. You can finish here, or try another activity.',
+  little: 'That’s a good sign. You can stop here, or keep going with another activity.',
+  same: 'That’s okay. Some moments need a different approach. You might like to try something else.',
+  worse: 'I’m sorry it feels harder right now. You can stop now. If you need support, please reach out to someone now.',
+  rather: 'That’s completely fine. You don’t have to share anything.',
+};
+
+return { EXPERIENCES, EXPERIENCE_TITLES, MOOD_MESSAGES, FEELING_OPTIONS, FEELING_RESPONSES };
+})();
+
+// ---- utils/moods ----
+const M_utils_moods = (() => {
+const { loadJSON, saveJSON, STORAGE_KEYS } = M_utils_storage;
+const { getEmotion } = M_data_emotions;
+
+// All mood check-ins live in this browser's localStorage. Nothing is invented:
+// every number shown in the app is counted from entries the person saved.
+
+function loadEntries() {
+  const list = loadJSON(STORAGE_KEYS.moodEntries, []);
+  return Array.isArray(list) ? list : [];
+}
+
+function addEntry(emotionId, note) {
+  const entries = loadEntries();
+  const entry = {
+    id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+    emotionId,
+    note: (note || '').trim(),
+    createdAt: new Date().toISOString(),
+  };
+  saveJSON(STORAGE_KEYS.moodEntries, [entry, ...entries]);
+  return entry;
+}
+
+function deleteEntry(id) {
+  saveJSON(
+    STORAGE_KEYS.moodEntries,
+    loadEntries().filter((e) => e.id !== id)
+  );
+}
+
+function clearEntries() {
+  saveJSON(STORAGE_KEYS.moodEntries, []);
+}
+
+// days: 'all' | '7' | '30'
+function filterEntries(entries, { emotionId = 'all', days = 'all' } = {}) {
+  const cutoff = days === 'all' ? 0 : Date.now() - Number(days) * 86400000;
+  return entries.filter(
+    (e) =>
+      (emotionId === 'all' || e.emotionId === emotionId) &&
+      new Date(e.createdAt).getTime() >= cutoff
+  );
+}
+
+// Returns [{ id, emotion, count }] sorted from most to least frequent.
+function countByEmotion(entries) {
+  const counts = {};
+  entries.forEach((e) => {
+    counts[e.emotionId] = (counts[e.emotionId] || 0) + 1;
+  });
+  return Object.entries(counts)
+    .sort((a, b) => b[1] - a[1])
+    .map(([id, count]) => ({ id, emotion: getEmotion(id), count }))
+    .filter((x) => x.emotion);
+}
+
+// Check-ins per day for the last `days` days, oldest first.
+function dailyCounts(entries, days = 14) {
+  const out = [];
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  for (let i = days - 1; i >= 0; i--) {
+    const start = new Date(today);
+    start.setDate(today.getDate() - i);
+    const end = new Date(start);
+    end.setDate(start.getDate() + 1);
+    const count = entries.filter((e) => {
+      const t = new Date(e.createdAt).getTime();
+      return t >= start.getTime() && t < end.getTime();
+    }).length;
+    out.push({ label: start.getDate(), count });
+  }
+  return out;
+}
+
+function formatDateTime(iso) {
+  return new Date(iso).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+}
+
+return { loadEntries, addEntry, deleteEntry, clearEntries, filterEntries, countByEmotion, dailyCounts, formatDateTime };
+})();
+
+// ---- components/FeelingCheck ----
+const M_components_FeelingCheck = (() => {
+
+
+const { FEELING_OPTIONS, FEELING_RESPONSES } = M_data_experiences;
+const { addEntry } = M_utils_moods;
+
+// "How are you feeling now?" with emoji answers. Optional save to My Mood.
+// It never says the game helped unless the person picks an answer that says so.
+function FeelingCheck({ emotionId, activityTitle, onAnother, onOptions }) {
+  const [choice, setChoice] = useState(null);
+  const [saved, setSaved] = useState(false);
+
+  const option = FEELING_OPTIONS.find((o) => o.id === choice);
+
+  function save() {
+    addEntry(emotionId, `After "${activityTitle}": ${option ? option.label : 'no answer'}`);
+    setSaved(true);
+  }
+
+  return (
+    <section className="card feedback" aria-labelledby="check-heading">
+      <h2 id="check-heading" className="section-title">How are you feeling now?</h2>
+      <p className="section-subtitle">Optional. Tap an emoji, or skip this.</p>
+
+      <div className="emoji-answers" role="group" aria-label="How you feel now">
+        {FEELING_OPTIONS.map((o) => (
+          <button
+            key={o.id}
+            type="button"
+            className={`emoji-answer${choice === o.id ? ' is-selected' : ''}`}
+            aria-pressed={choice === o.id}
+            onClick={() => { setChoice(o.id); setSaved(false); }}
+          >
+            <span className="emoji-answer__face" aria-hidden="true">{o.emoji}</span>
+            <span>{o.label}</span>
+          </button>
+        ))}
+      </div>
+
+      {choice && <p className="feedback-response" role="status">{FEELING_RESPONSES[choice]}</p>}
+
+      {choice && (
+        <div className="page-actions">
+          {saved ? (
+            <p className="form-success" role="status">Saved to My Mood on this device.</p>
+          ) : (
+            <button type="button" className="btn btn--ghost" onClick={save}>Save to My Mood</button>
+          )}
+        </div>
+      )}
+
+      <div className="page-actions">
+        <button type="button" className="btn btn--primary" onClick={onAnother}>Try another activity 🌿</button>
+        <button type="button" className="btn btn--ghost" onClick={onOptions}>Back to my options</button>
+        <Link to="/" className="btn btn--ghost">Return home</Link>
+        <Link to="/urgent-help" className={`btn ${choice === 'worse' ? 'btn--urgent' : 'btn--urgent-soft'}`}>
+          Get urgent help
+        </Link>
+      </div>
+    </section>
+  );
+}
+
+return { default: FeelingCheck, FeelingCheck };
+})();
+
+// ---- components/fun/PopBubbles ----
+const M_components_fun_PopBubbles = (() => {
+
+
+const COLORS = ['#f9d3e0', '#d3f3e4', '#d9ccf7', '#ffe2cc', '#fff1b8', '#cfe8fb'];
+const COUNT = 14;
+
+function makeBubbles() {
+  return Array.from({ length: COUNT }, (_, i) => ({
+    id: `${Date.now()}-${i}`,
+    x: 4 + Math.random() * 82,
+    y: 4 + Math.random() * 76,
+    size: 50 + Math.random() * 46,
+    color: COLORS[i % COLORS.length],
+    popped: false,
+  }));
+}
+
+function PopBubbles() {
+  const [bubbles, setBubbles] = useState(makeBubbles);
+  const poppedCount = bubbles.filter((b) => b.popped).length;
+
+  function pop(id) {
+    setBubbles((bs) => bs.map((b) => (b.id === id ? { ...b, popped: true } : b)));
+  }
+
+  return (
+    <div className="fun-panel">
+      <p className="fun-label" aria-live="polite">
+        {poppedCount === COUNT
+          ? 'All popped. Take one slow breath.'
+          : `Popped ${poppedCount} of ${COUNT}. Pop as many as you like.`}
+      </p>
+      <div className="pop-field">
+        {bubbles.map(
+          (b) =>
+            !b.popped && (
+              <button
+                key={b.id}
+                type="button"
+                className="pop-bubble"
+                aria-label="Pop this bubble"
+                style={{ left: `${b.x}%`, top: `${b.y}%`, width: b.size, height: b.size, background: b.color }}
+                onClick={() => pop(b.id)}
+              />
+            )
+        )}
+      </div>
+      <button type="button" className="btn btn--ghost" onClick={() => setBubbles(makeBubbles())}>
+        New bubbles
+      </button>
+    </div>
+  );
+}
+
+return { default: PopBubbles, PopBubbles };
+})();
+
+// ---- components/fun/BreathingBubble ----
+const M_components_fun_BreathingBubble = (() => {
+
+
+// A bubble that grows as you breathe in and softens as you breathe out.
+// 4 seconds in, 6 seconds out. No breath holds.
+const IN_MS = 4000;
+const OUT_MS = 6000;
+
+function BreathingBubble() {
+  const [running, setRunning] = useState(false);
+  const [phase, setPhase] = useState('in');
+
+  useEffect(() => {
+    if (!running) return undefined;
+    const timer = setTimeout(
+      () => setPhase((p) => (p === 'in' ? 'out' : 'in')),
+      phase === 'in' ? IN_MS : OUT_MS
+    );
+    return () => clearTimeout(timer);
+  }, [running, phase]);
+
+  const label = !running
+    ? 'Press start when you are ready.'
+    : phase === 'in'
+      ? 'Breathe in... the bubble grows.'
+      : 'Breathe out... the bubble softens.';
+
+  return (
+    <div className="fun-panel">
+      <div className={`bubble bubble--${phase}${running ? '' : ' is-idle'}`} aria-hidden="true" />
+      <p className="fun-label" aria-live="polite">{label}</p>
+      <button type="button" className="btn btn--primary" onClick={() => setRunning((r) => !r)}>
+        {running ? 'Pause' : 'Start'}
+      </button>
+    </div>
+  );
+}
+
+return { default: BreathingBubble, BreathingBubble };
+})();
+
+// ---- components/fun/VirtualGarden ----
+const M_components_fun_VirtualGarden = (() => {
+
+
+// Each patch goes soil -> sprout -> bud -> bloom, then back to soil on the next tap.
+const CELLS = 20;
+const STAGES = [
+  { label: 'Empty soil', symbol: '' },
+  { label: 'Sprout', symbol: '•' },
+  { label: 'Bud', symbol: '✿' },
+  { label: 'In bloom', symbol: '❀' },
+];
+
+function VirtualGarden() {
+  const [cells, setCells] = useState(() => Array(CELLS).fill(0));
+  const blooms = cells.filter((c) => c === 3).length;
+
+  function tap(index) {
+    setCells((cs) => cs.map((c, i) => (i === index ? (c + 1) % 4 : c)));
+  }
+
+  return (
+    <div className="fun-panel">
+      <p className="fun-label" aria-live="polite">
+        {blooms === 0
+          ? 'Tap a patch of soil to plant something.'
+          : `${blooms} ${blooms === 1 ? 'flower is' : 'flowers are'} blooming. Tap a flower to start again.`}
+      </p>
+      <div className="garden-grid">
+        {cells.map((stage, i) => (
+          <button
+            key={i}
+            type="button"
+            className={`garden-cell garden-cell--${stage}`}
+            aria-label={`Patch ${i + 1}: ${STAGES[stage].label}`}
+            onClick={() => tap(i)}
+          >
+            <span aria-hidden="true">{STAGES[stage].symbol}</span>
+          </button>
+        ))}
+      </div>
+      <button type="button" className="btn btn--ghost" onClick={() => setCells(Array(CELLS).fill(0))}>
+        Clear garden
+      </button>
+    </div>
+  );
+}
+
+return { default: VirtualGarden, VirtualGarden };
+})();
+
+// ---- components/fun/ColorGame ----
+const M_components_fun_ColorGame = (() => {
+
+
+// A free-colouring canvas. There is no right pattern and no score.
+const PALETTE = ['#f9d3e0', '#d3f3e4', '#d9ccf7', '#ffe2cc', '#fff1b8', '#cfe8fb'];
+const SIZE = 5;
+
+function ColorGame() {
+  const [chosen, setChosen] = useState(0);
+  const [tiles, setTiles] = useState(() => Array(SIZE * SIZE).fill(null));
+
+  function paint(index) {
+    setTiles((ts) => ts.map((t, i) => (i === index ? PALETTE[chosen] : t)));
+  }
+
+  return (
+    <div className="fun-panel">
+      <p className="fun-label">Pick a colour, then tap the tiles. Colour freely.</p>
+      <div className="palette" role="group" aria-label="Choose a colour">
+        {PALETTE.map((color, i) => (
+          <button
+            key={color}
+            type="button"
+            className={`swatch${chosen === i ? ' is-chosen' : ''}`}
+            style={{ background: color }}
+            aria-label={`Colour ${i + 1}`}
+            aria-pressed={chosen === i}
+            onClick={() => setChosen(i)}
+          />
+        ))}
+      </div>
+      <div className="tile-grid">
+        {tiles.map((color, i) => (
+          <button
+            key={i}
+            type="button"
+            className="tile"
+            style={{ background: color || 'var(--surface)' }}
+            aria-label={`Tile ${i + 1}${color ? ' coloured' : ' blank'}`}
+            onClick={() => paint(i)}
+          />
+        ))}
+      </div>
+      <button type="button" className="btn btn--ghost" onClick={() => setTiles(Array(SIZE * SIZE).fill(null))}>
+        Clear canvas
+      </button>
+    </div>
+  );
+}
+
+return { default: ColorGame, ColorGame };
+})();
+
+// ---- components/games/MoodMatch ----
+const M_components_games_MoodMatch = (() => {
+
+
+// Match a feeling word to its emoji. There are no wrong feelings here.
+const FEELINGS = [
+  { word: 'Calm', emoji: '😌' },
+  { word: 'Happy', emoji: '😊' },
+  { word: 'Tired', emoji: '😴' },
+  { word: 'Anxious', emoji: '😟' },
+  { word: 'Sad', emoji: '😢' },
+];
+const ROUNDS = 5;
+
+function pickRound(prev) {
+  const target = FEELINGS[Math.floor(Math.random() * FEELINGS.length)];
+  const others = FEELINGS.filter((f) => f.word !== target.word).sort(() => Math.random() - 0.5).slice(0, 2);
+  const options = [target, ...others].sort(() => Math.random() - 0.5);
+  return prev && prev.target.word === target.word ? pickRound(prev) : { target, options };
+}
+
+function MoodMatch() {
+  const [round, setRound] = useState(() => pickRound(null));
+  const [count, setCount] = useState(1);
+  const [picked, setPicked] = useState(null);
+  const finished = count > ROUNDS;
+  const correct = useMemo(() => picked && picked.word === round.target.word, [picked, round]);
+
+  function next() {
+    setRound((r) => pickRound(r));
+    setCount((c) => c + 1);
+    setPicked(null);
+  }
+
+  if (finished) {
+    return (
+      <div className="fun-panel">
+        <p className="fun-label">You explored {ROUNDS} feelings. Every one of them is worth noticing.</p>
+        <button type="button" className="btn btn--primary" onClick={() => { setCount(1); setPicked(null); }}>
+          Play again
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="fun-panel">
+      <p className="progress-text">Round {count} of {ROUNDS}</p>
+      <p className="fun-label">Which face matches <strong>{round.target.word}</strong>?</p>
+      <div className="match-options">
+        {round.options.map((o) => (
+          <button
+            key={o.word + o.emoji}
+            type="button"
+            className={`match-option${picked && picked.word === o.word ? ' is-picked' : ''}`}
+            onClick={() => setPicked(o)}
+            disabled={!!picked}
+            aria-label={`${o.word} face`}
+          >
+            {o.emoji}
+          </button>
+        ))}
+      </div>
+      {picked && (
+        <>
+          <p className="fun-label" role="status">
+            {correct ? 'Nice match!' : 'Not quite, and that’s fine. Feelings can be hard to name.'}
+          </p>
+          <button type="button" className="btn btn--primary" onClick={next}>Next</button>
+        </>
+      )}
+    </div>
+  );
+}
+
+return { default: MoodMatch, MoodMatch };
+})();
+
+// ---- components/games/KindWords ----
+const M_components_games_KindWords = (() => {
+
+
+const WORDS = [
+  'Feeling low doesn’t mean something is wrong with you.',
+  'You are allowed to take things slowly today.',
+  'It’s okay not to have the words yet.',
+  'Small kindness to yourself counts.',
+  'You don’t have to be okay right now to be worth caring for.',
+  'Rest, water, or a warm drink are all good choices.',
+];
+
+function KindWords() {
+  const [index, setIndex] = useState(-1);
+
+  return (
+    <div className="fun-panel">
+      {index === -1 ? (
+        <p className="fun-label">Tap the button when you'd like a gentle word. Take them one at a time.</p>
+      ) : (
+        <p className="kind-word" aria-live="polite">{WORDS[index]}</p>
+      )}
+      <button
+        type="button"
+        className="btn btn--primary"
+        onClick={() => setIndex((i) => (i + 1) % WORDS.length)}
+      >
+        {index === -1 ? 'Show me a kind word' : 'Another kind word'}
+      </button>
+      <p className="muted small">These are general reminders, not advice for your situation.</p>
+    </div>
+  );
+}
+
+return { default: KindWords, KindWords };
+})();
+
+// ---- components/games/TapRelease ----
+const M_components_games_TapRelease = (() => {
+
+const BreathingBubble = M_components_fun_BreathingBubble.default;
+
+// Tap to release. Each tap sends out a burst of sparks. After enough taps,
+// a calming breathing bubble appears so the game ends on something slower.
+const TARGET = 15;
+
+function TapRelease() {
+  const [taps, setTaps] = useState(0);
+  const [sparks, setSparks] = useState([]);
+  const done = taps >= TARGET;
+
+  function release() {
+    const id = Date.now() + Math.random();
+    const burst = Array.from({ length: 8 }, (_, i) => ({
+      id: `${id}-${i}`,
+      angle: (i / 8) * Math.PI * 2,
+      color: ['#f9d3e0', '#ffe2cc', '#d9ccf7', '#fff1b8'][i % 4],
+    }));
+    setSparks((s) => [...s, { id, burst }]);
+    setTaps((t) => t + 1);
+    setTimeout(() => setSparks((s) => s.filter((x) => x.id !== id)), 700);
+  }
+
+  return (
+    <div className="fun-panel">
+      <p className="fun-label" aria-live="polite">
+        {done
+          ? 'Nice release. Let’s slow things down now.'
+          : `Tap as many times as you like. ${taps} of ${TARGET} released.`}
+      </p>
+      {!done && (
+        <div className="release-zone">
+          <button type="button" className="release-button" onClick={release} aria-label="Release tension">
+            Tap to release
+          </button>
+          {sparks.map((s) =>
+            s.burst.map((p) => (
+              <span
+                key={p.id}
+                className="spark"
+                aria-hidden="true"
+                style={{
+                  background: p.color,
+                  '--dx': `${Math.cos(p.angle) * 90}px`,
+                  '--dy': `${Math.sin(p.angle) * 90}px`,
+                }}
+              />
+            ))
+          )}
+        </div>
+      )}
+      {done && <BreathingBubble />}
+    </div>
+  );
+}
+
+return { default: TapRelease, TapRelease };
+})();
+
+// ---- components/games/OneStep ----
+const M_components_games_OneStep = (() => {
+
+
+// Shows one small step at a time, so nothing feels like a long list.
+const STEPS = [
+  'Stand up and stretch your arms for ten seconds.',
+  'Drink a glass of water, or a few sips if that’s all you can manage.',
+  'Put one thing back where it belongs.',
+  'Set a two-minute timer and write one line about what is on your mind.',
+  'Look out of a window or at the sky for a moment.',
+];
+
+function OneStep() {
+  const [index, setIndex] = useState(0);
+  const finished = index >= STEPS.length;
+
+  if (finished) {
+    return (
+      <div className="fun-panel">
+        <p className="fun-label">You took things one step at a time. That counts.</p>
+        <button type="button" className="btn btn--ghost" onClick={() => setIndex(0)}>Start again</button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="fun-panel">
+      <p className="progress-text">Step {index + 1} of {STEPS.length}</p>
+      <p className="step-card">{STEPS[index]}</p>
+      <p className="muted small">Only this one. The rest can wait.</p>
+      <div className="page-actions">
+        <button type="button" className="btn btn--ghost" onClick={() => setIndex(index + 1)}>Skip</button>
+        <button type="button" className="btn btn--primary" onClick={() => setIndex(index + 1)}>Done</button>
+      </div>
+    </div>
+  );
+}
+
+return { default: OneStep, OneStep };
+})();
+
+// ---- components/games/RestTimer ----
+const M_components_games_RestTimer = (() => {
+
+
+// A countdown with start, pause and reset. Used for rest and five-minute challenges.
+// Nothing is scored. The timer just counts down.
+function RestTimer({ seconds = 180, prompts = ['Rest your eyes and breathe slowly.'], intro }) {
+  const [left, setLeft] = useState(seconds);
+  const [running, setRunning] = useState(false);
+
+  useEffect(() => {
+    if (!running) return undefined;
+    const id = setInterval(() => setLeft((l) => Math.max(0, l - 1)), 1000);
+    return () => clearInterval(id);
+  }, [running]);
+
+  useEffect(() => {
+    if (left === 0) setRunning(false);
+  }, [left]);
+
+  const elapsed = seconds - left;
+  const promptIndex = Math.min(Math.floor((elapsed / seconds) * prompts.length), prompts.length - 1);
+  const mins = Math.floor(left / 60);
+  const secs = String(left % 60).padStart(2, '0');
+
+  return (
+    <div className="fun-panel">
+      <p className="fun-label">{intro}</p>
+      <div className="timer" aria-live="polite">{mins}:{secs}</div>
+      <div className="progress-track" aria-hidden="true">
+        <div className="progress-fill" style={{ width: `${(elapsed / seconds) * 100}%` }} />
+      </div>
+      <p className="fun-label">
+        {left === 0 ? 'Time is up. Nothing needs to change right now.' : prompts[promptIndex]}
+      </p>
+      <div className="page-actions">
+        {left === 0 ? null : running ? (
+          <button type="button" className="btn btn--ghost" onClick={() => setRunning(false)}>Pause</button>
+        ) : (
+          <button type="button" className="btn btn--primary" onClick={() => setRunning(true)}>
+            {elapsed > 0 ? 'Resume' : 'Start'}
+          </button>
+        )}
+        <button
+          type="button"
+          className="btn btn--ghost"
+          onClick={() => { setRunning(false); setLeft(seconds); }}
+        >
+          Reset
+        </button>
+      </div>
+    </div>
+  );
+}
+
+return { default: RestTimer, RestTimer };
+})();
+
+// ---- components/games/FloatingShapes ----
+const M_components_games_FloatingShapes = (() => {
+
+
+// Soft shapes drifting slowly. Tap a shape to make it gently grow.
+// The motion can be paused, and it is also turned off by the reduced-motion setting.
+const SHAPES = [
+  { id: 1, size: 70, left: 8, top: 12, color: '#f9d3e0', delay: 0 },
+  { id: 2, size: 96, left: 62, top: 8, color: '#d3f3e4', delay: 1.2 },
+  { id: 3, size: 60, left: 30, top: 48, color: '#d9ccf7', delay: 0.6 },
+  { id: 4, size: 84, left: 74, top: 52, color: '#ffe2cc', delay: 2 },
+  { id: 5, size: 50, left: 14, top: 72, color: '#fff1b8', delay: 1.6 },
+  { id: 6, size: 66, left: 48, top: 76, color: '#cfe8fb', delay: 0.3 },
+];
+
+function FloatingShapes() {
+  const [paused, setPaused] = useState(false);
+  const [big, setBig] = useState({});
+
+  return (
+    <div className="fun-panel">
+      <p className="fun-label">Let your eyes wander. Tap any shape if you like.</p>
+      <div className="shape-field">
+        {SHAPES.map((s) => (
+          <button
+            key={s.id}
+            type="button"
+            className={`shape${paused ? ' is-paused' : ''}`}
+            aria-label="Gently grow this shape"
+            style={{
+              left: `${s.left}%`,
+              top: `${s.top}%`,
+              width: big[s.id] ? s.size * 1.25 : s.size,
+              height: big[s.id] ? s.size * 1.25 : s.size,
+              background: s.color,
+              animationDelay: `${s.delay}s`,
+            }}
+            onClick={() => setBig((b) => ({ ...b, [s.id]: !b[s.id] }))}
+          />
+        ))}
+      </div>
+      <button type="button" className="btn btn--ghost" onClick={() => setPaused((p) => !p)}>
+        {paused ? 'Resume motion' : 'Pause motion'}
+      </button>
+    </div>
+  );
+}
+
+return { default: FloatingShapes, FloatingShapes };
+})();
+
+// ---- components/games/SensoryExplore ----
+const M_components_games_SensoryExplore = (() => {
+
+
+// Tap each sense to explore it. Gentle prompts only, no right answers.
+const SENSES = [
+  { id: 'see', label: 'See', emoji: '👀', prompt: 'Find something nearby that has a color you like.' },
+  { id: 'touch', label: 'Touch', emoji: '✋', prompt: 'Touch something soft or smooth, and notice its texture.' },
+  { id: 'hear', label: 'Hear', emoji: '👂', prompt: 'Listen for the quietest sound you can find.' },
+  { id: 'smell', label: 'Smell', emoji: '👃', prompt: 'Notice any smell, or think of one you enjoy.' },
+  { id: 'taste', label: 'Taste', emoji: '👅', prompt: 'If you have a drink nearby, notice its taste slowly.' },
+];
+
+function SensoryExplore() {
+  const [active, setActive] = useState(null);
+  const [explored, setExplored] = useState([]);
+  const current = SENSES.find((s) => s.id === active);
+
+  function choose(id) {
+    setActive(id);
+    setExplored((e) => (e.includes(id) ? e : [...e, id]));
+  }
+
+  return (
+    <div className="fun-panel">
+      <p className="fun-label">Choose a sense to explore. You can come back to any of them.</p>
+      <div className="sense-grid">
+        {SENSES.map((s) => (
+          <button
+            key={s.id}
+            type="button"
+            className={`sense-btn${active === s.id ? ' is-active' : ''}${explored.includes(s.id) ? ' is-explored' : ''}`}
+            aria-pressed={active === s.id}
+            onClick={() => choose(s.id)}
+          >
+            <span aria-hidden="true">{s.emoji}</span>
+            {s.label}
+          </button>
+        ))}
+      </div>
+      {current && <p className="step-card" aria-live="polite">{current.prompt}</p>}
+      <p className="muted small">Explored {explored.length} of {SENSES.length} senses.</p>
+    </div>
+  );
+}
+
+return { default: SensoryExplore, SensoryExplore };
+})();
+
+// ---- components/games/Confetti ----
+const M_components_games_Confetti = (() => {
+
+
+// Tap the button for a short confetti burst. Pieces clear themselves after a few seconds.
+const COLORS = ['#f9d3e0', '#ffe2cc', '#d9ccf7', '#d3f3e4', '#fff1b8', '#cfe8fb'];
+
+function makePieces() {
+  return Array.from({ length: 36 }, (_, i) => ({
+    id: `${Date.now()}-${i}`,
+    left: Math.random() * 100,
+    delay: Math.random() * 0.4,
+    color: COLORS[i % COLORS.length],
+    drift: (Math.random() - 0.5) * 120,
+  }));
+}
+
+function Confetti() {
+  const [pieces, setPieces] = useState([]);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (pieces.length === 0) return undefined;
+    const t = setTimeout(() => setPieces([]), 3500);
+    return () => clearTimeout(t);
+  }, [pieces]);
+
+  function celebrate() {
+    setPieces(makePieces());
+    setCount((c) => c + 1);
+  }
+
+  return (
+    <div className="fun-panel confetti-wrap">
+      <p className="fun-label">Celebrate this moment, however big or small it is.</p>
+      <button type="button" className="btn btn--primary btn--big" onClick={celebrate}>
+        Celebrate 🎉
+      </button>
+      {count > 0 && <p className="muted small">Celebrated {count} {count === 1 ? 'time' : 'times'}.</p>}
+      <div className="confetti-layer" aria-hidden="true">
+        {pieces.map((p) => (
+          <span
+            key={p.id}
+            className="confetti-piece"
+            style={{ left: `${p.left}%`, background: p.color, animationDelay: `${p.delay}s`, '--drift': `${p.drift}px` }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+return { default: Confetti, Confetti };
+})();
+
+// ---- components/games/HappyMemory ----
+const M_components_games_HappyMemory = (() => {
+
+const { loadJSON, saveJSON, STORAGE_KEYS } = M_utils_storage;
+
+// Write down a happy memory. Saved only when you press Save, in this browser only.
+function HappyMemory() {
+  const [text, setText] = useState('');
+  const [status, setStatus] = useState('');
+
+  function save() {
+    if (!text.trim()) {
+      setStatus('Write a few words first, or try again later.');
+      return;
+    }
+    const entries = loadJSON(STORAGE_KEYS.journal, []);
+    const ok = saveJSON(STORAGE_KEYS.journal, [
+      ...entries,
+      { id: Date.now().toString(), text: `Happy memory: ${text.trim()}`, createdAt: new Date().toISOString() },
+    ]);
+    setStatus(ok ? 'Saved to your happy memories on this device.' : 'This could not be saved in your browser.');
+    if (ok) setText('');
+  }
+
+  return (
+    <div className="fun-panel">
+      <label htmlFor="happy-memory" className="fun-label">What is one happy memory you want to keep?</label>
+      <textarea
+        id="happy-memory"
+        className="textarea"
+        rows={4}
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        placeholder="For example: The sunset on the walk home"
+      />
+      <div className="page-actions">
+        <button type="button" className="btn btn--primary" onClick={save}>Save memory</button>
+      </div>
+      {status && <p className="form-success" role="status">{status}</p>}
+    </div>
+  );
+}
+
+return { default: HappyMemory, HappyMemory };
+})();
+
+// ---- components/games/GoalGame ----
+const M_components_games_GoalGame = (() => {
+
+const Confetti = M_components_games_Confetti.default;
+
+// Add small goals, tap them when done. A celebration shows when all are complete.
+let nextId = 1;
+
+function GoalGame() {
+  const [draft, setDraft] = useState('');
+  const [goals, setGoals] = useState([]);
+  const doneCount = goals.filter((g) => g.done).length;
+  const allDone = goals.length > 0 && doneCount === goals.length;
+
+  function add(e) {
+    e.preventDefault();
+    if (!draft.trim()) return;
+    setGoals([...goals, { id: nextId++, text: draft.trim(), done: false }]);
+    setDraft('');
+  }
+
+  function toggle(id) {
+    setGoals(goals.map((g) => (g.id === id ? { ...g, done: !g.done } : g)));
+  }
+
+  return (
+    <div className="fun-panel">
+      <p className="fun-label">Add a small goal, then tap it when it's done.</p>
+      <form onSubmit={add} className="inline-form">
+        <label htmlFor="goal-input" className="sr-only">New goal</label>
+        <input
+          id="goal-input"
+          className="input"
+          value={draft}
+          onChange={(e) => setDraft(e.target.value)}
+          placeholder="For example: Reply to one message"
+        />
+        <button type="submit" className="btn btn--primary" disabled={!draft.trim()}>Add</button>
+      </form>
+
+      {goals.length > 0 && (
+        <>
+          <div className="progress-track" aria-hidden="true">
+            <div className="progress-fill" style={{ width: `${(doneCount / goals.length) * 100}%` }} />
+          </div>
+          <p className="muted small">{doneCount} of {goals.length} done</p>
+          <ul className="goal-list">
+            {goals.map((g) => (
+              <li key={g.id}>
+                <button
+                  type="button"
+                  className={`goal-item${g.done ? ' is-done' : ''}`}
+                  aria-pressed={g.done}
+                  onClick={() => toggle(g.id)}
+                >
+                  <span aria-hidden="true">{g.done ? '✅' : '⬜'}</span> {g.text}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+
+      {allDone && (
+        <>
+          <p className="fun-label" role="status">All goals done. Nice work on finishing them.</p>
+          <Confetti />
+        </>
+      )}
+    </div>
+  );
+}
+
+return { default: GoalGame, GoalGame };
+})();
+
+// ---- pages/FeelExperience ----
+const M_pages_FeelExperience = (() => {
+
+
+const { getEmotion } = M_data_emotions;
+const { EXPERIENCES, EXPERIENCE_TITLES, MOOD_MESSAGES } = M_data_experiences;
+const FeelingCheck = M_components_FeelingCheck.default;
+const PopBubbles = M_components_fun_PopBubbles.default;
+const BreathingBubble = M_components_fun_BreathingBubble.default;
+const VirtualGarden = M_components_fun_VirtualGarden.default;
+const ColorGame = M_components_fun_ColorGame.default;
+const GroundingActivity = M_components_activities_GroundingActivity.default;
+const MoodMatch = M_components_games_MoodMatch.default;
+const KindWords = M_components_games_KindWords.default;
+const TapRelease = M_components_games_TapRelease.default;
+const OneStep = M_components_games_OneStep.default;
+const RestTimer = M_components_games_RestTimer.default;
+const FloatingShapes = M_components_games_FloatingShapes.default;
+const SensoryExplore = M_components_games_SensoryExplore.default;
+const Confetti = M_components_games_Confetti.default;
+const HappyMemory = M_components_games_HappyMemory.default;
+const GoalGame = M_components_games_GoalGame.default;
+
+// Renders one game. `onDone` lets a game end the session when it finishes.
+function renderGame(id, onDone) {
+  switch (id) {
+    case 'popBubbles': return <PopBubbles />;
+    case 'breathingBubble': return <BreathingBubble />;
+    case 'garden': return <VirtualGarden />;
+    case 'colorGame': return <ColorGame />;
+    case 'grounding': return <GroundingActivity onFinish={onDone} />;
+    case 'moodMatch': return <MoodMatch />;
+    case 'kindWords': return <KindWords />;
+    case 'tapRelease': return <TapRelease />;
+    case 'oneStep': return <OneStep />;
+    case 'restTimer': return (
+      <RestTimer
+        seconds={180}
+        intro="A three-minute rest. You can pause, reset, or stop any time."
+        prompts={['Let your shoulders drop.', 'Breathe slowly, at your own pace.', 'Notice how the chair or floor supports you.', 'Rest a little longer if you like.']}
+      />
+    );
+    case 'floatingShapes': return <FloatingShapes />;
+    case 'sensory': return <SensoryExplore />;
+    case 'confetti': return <Confetti />;
+    case 'happyMemory': return <HappyMemory />;
+    case 'fiveMinute': return (
+      <RestTimer
+        seconds={300}
+        intro="A five-minute challenge. Pick one small thing and work on it, then pause when you like."
+        prompts={['Choose one small thing to start.', 'Keep going at a comfortable pace.', 'Notice what you have already done.', 'Pause whenever you need to.']}
+      />
+    );
+    case 'goalGame': return <GoalGame />;
+    default: return <p>This activity isn't available.</p>;
+  }
+}
+
+// Motion class for the big emoji, so each mood moves in its own way.
+const EMOJI_MOTION = {
+  stressed: 'wobble', anxious: 'tremble', sad: 'sway', angry: 'shake', overwhelmed: 'wobble',
+  exhausted: 'sway', numb: 'fade', happy: 'bounce', calm: 'sway', motivated: 'bounce',
+};
+
+function FeelExperience() {
+  const { emotionId } = useParams();
+  const navigate = useNavigate();
+  const emotion = getEmotion(emotionId);
+  const experiences = EXPERIENCES[emotionId] ?? [];
+
+  // 'intro' -> 'playing' -> 'feedback'
+  const [stage, setStage] = useState('intro');
+  const [index, setIndex] = useState(0);
+
+  if (!emotion || experiences.length === 0) {
+    return (
+      <div className="page">
+        <div className="card">
+          <h1>We couldn't find that mood.</h1>
+          <Link to="/" className="btn btn--primary">Back to my mood</Link>
+        </div>
+      </div>
+    );
+  }
+
+  const current = experiences[index];
+  const title = EXPERIENCE_TITLES[current];
+
+  function nextExperience() {
+    setIndex((i) => (i + 1) % experiences.length);
+    setStage('playing');
+  }
+
+  return (
+    <div className="page feel-page" style={{ '--tint': emotion.tint }}>
+      <div className="page-actions">
+        <button type="button" className="btn btn--ghost" onClick={() => navigate('/')}>← Back</button>
+      </div>
+
+      {stage === 'intro' && (
+        <section className="feel-hero card">
+          <div className={`feel-emoji feel-emoji--${EMOJI_MOTION[emotion.id]}`} aria-hidden="true">{emotion.emoji}</div>
+          <p className="eyebrow">You chose {emotion.label.toLowerCase()}</p>
+          <h1 className="feel-title">{emotion.label}</h1>
+          <p className="feel-message">{MOOD_MESSAGES[emotion.id]}</p>
+          <p className="fun-label">Want to try a little game to explore this feeling?</p>
+          <div className="feel-buttons">
+            <button type="button" className="btn btn--primary btn--big" onClick={() => setStage('playing')}>
+              Let's Play 🎮
+            </button>
+            <button type="button" className="btn btn--ghost" onClick={nextExperience}>
+              Try Another Activity 🌿
+            </button>
+            <button type="button" className="btn btn--ghost" onClick={() => navigate('/')}>
+              Change My Mood
+            </button>
+          </div>
+          <p className="muted small">
+            You can skip any game and come back anytime. <Link to={`/activities/${emotion.id}`}>See all gentle activities</Link>
+          </p>
+        </section>
+      )}
+
+      {stage === 'playing' && (
+        <>
+          <section className="card feel-game">
+            <div className="feel-game__head">
+              <span className={`feel-emoji-small feel-emoji--${EMOJI_MOTION[emotion.id]}`} aria-hidden="true">{emotion.emoji}</span>
+              <div>
+                <p className="eyebrow">{title}</p>
+                <p className="muted small">Explore this feeling at your own pace.</p>
+              </div>
+            </div>
+            {renderGame(current, () => setStage('feedback'))}
+          </section>
+          <div className="page-actions">
+            <button type="button" className="btn btn--primary" onClick={() => setStage('feedback')}>I'm done</button>
+            <button type="button" className="btn btn--ghost" onClick={nextExperience}>Try another activity 🌿</button>
+            <button type="button" className="btn btn--ghost" onClick={() => setStage('intro')}>Back to my options</button>
+            <button type="button" className="btn btn--ghost" onClick={() => navigate('/')}>Return home</button>
+          </div>
+        </>
+      )}
+
+      {stage === 'feedback' && (
+        <FeelingCheck
+          emotionId={emotion.id}
+          activityTitle={title}
+          onAnother={nextExperience}
+          onOptions={() => setStage('intro')}
+        />
+      )}
+    </div>
+  );
+}
+
+return { default: FeelExperience, FeelExperience };
+})();
+
+// ---- pages/MyMood ----
+const M_pages_MyMood = (() => {
+
+
+const { EMOTIONS, getEmotion } = M_data_emotions;
+const {
+  loadEntries,
+  addEntry,
+  deleteEntry,
+  clearEntries,
+  filterEntries,
+  dailyCounts,
+  formatDateTime,
+} = M_utils_moods;
+
+function MyMood() {
+  const [entries, setEntries] = useState(() => loadEntries());
+  const [emotionId, setEmotionId] = useState(null);
+  const [note, setNote] = useState('');
+  const [message, setMessage] = useState('');
+  const [filterEmotion, setFilterEmotion] = useState('all');
+  const [filterDays, setFilterDays] = useState('all');
+  const [confirmClear, setConfirmClear] = useState(false);
+
+  const visible = useMemo(
+    () => filterEntries(entries, { emotionId: filterEmotion, days: filterDays }),
+    [entries, filterEmotion, filterDays]
+  );
+  const daily = useMemo(() => dailyCounts(entries, 14), [entries]);
+  const maxDaily = Math.max(1, ...daily.map((d) => d.count));
+
+  function save() {
+    if (!emotionId) {
+      setMessage('Choose how you feel first, then save.');
+      return;
+    }
+    addEntry(emotionId, note);
+    setEntries(loadEntries());
+    setEmotionId(null);
+    setNote('');
+    setMessage('Check-in saved on this device.');
+  }
+
+  function remove(id) {
+    deleteEntry(id);
+    setEntries(loadEntries());
+  }
+
+  function clearAll() {
+    clearEntries();
+    setEntries([]);
+    setConfirmClear(false);
+    setMessage('Your history was cleared.');
+  }
+
+  return (
+    <div className="page">
+      <header className="page-header">
+        <p className="eyebrow">Personal reflection</p>
+        <h1>My Mood</h1>
+        <p className="section-subtitle">
+          This is a personal reflection tool, not a clinical assessment. Your check-ins are stored only in this
+          browser.
+        </p>
+      </header>
+
+      <section className="card stack-lg" aria-labelledby="checkin-heading">
+        <h2 id="checkin-heading" className="card-title">How are you feeling right now?</h2>
+        <div className="chip-grid" role="group" aria-label="Choose an emotion">
+          {EMOTIONS.map((e) => (
+            <button
+              key={e.id}
+              type="button"
+              className={`chip${emotionId === e.id ? ' is-selected' : ''}`}
+              aria-pressed={emotionId === e.id}
+              onClick={() => setEmotionId(e.id)}
+            >
+              {e.label}
+            </button>
+          ))}
+        </div>
+        <label htmlFor="mood-note" className="field-label">Add a note (optional)</label>
+        <textarea
+          id="mood-note"
+          className="textarea"
+          rows={3}
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+          placeholder="Anything you'd like to remember about this moment"
+        />
+        <div className="page-actions">
+          <button type="button" className="btn btn--primary" onClick={save}>Save check-in</button>
+        </div>
+        {message && <p className="form-success" role="status">{message}</p>}
+      </section>
+
+      {entries.length === 0 ? (
+        <section className="card empty-state">
+          <h2 className="card-title">Your space is ready whenever you want to check in.</h2>
+          <p className="muted">There's no need to track every day.</p>
+        </section>
+      ) : (
+        <>
+          <section className="card" aria-labelledby="chart-heading">
+            <h2 id="chart-heading" className="card-title">Check-ins over the last 14 days</h2>
+            <p className="muted">Each bar is the number of check-ins you saved that day.</p>
+            <div className="bar-chart" role="img" aria-label="Bar chart of check-ins per day">
+              {daily.map((d, i) => (
+                <div key={i} className="bar-col">
+                  <span className="bar-count">{d.count || ''}</span>
+                  <div className="bar" style={{ height: `${(d.count / maxDaily) * 100}%` }} />
+                  <span className="bar-label">{d.label}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="card" aria-labelledby="history-heading">
+            <h2 id="history-heading" className="card-title">History</h2>
+            <div className="filters">
+              <label className="filter">
+                <span>Emotion</span>
+                <select value={filterEmotion} onChange={(e) => setFilterEmotion(e.target.value)}>
+                  <option value="all">All emotions</option>
+                  {EMOTIONS.map((e) => (
+                    <option key={e.id} value={e.id}>{e.label}</option>
+                  ))}
+                </select>
+              </label>
+              <label className="filter">
+                <span>Date</span>
+                <select value={filterDays} onChange={(e) => setFilterDays(e.target.value)}>
+                  <option value="all">All time</option>
+                  <option value="7">Last 7 days</option>
+                  <option value="30">Last 30 days</option>
+                </select>
+              </label>
+            </div>
+
+            {visible.length === 0 ? (
+              <p className="muted">No check-ins match these filters.</p>
+            ) : (
+              <ul className="history-list">
+                {visible.map((e) => {
+                  const emotion = getEmotion(e.emotionId);
+                  return (
+                    <li key={e.id} className="history-item">
+                      <div>
+                        <p className="history-emotion">{emotion ? emotion.label : 'Unknown'}</p>
+                        <p className="muted small">{formatDateTime(e.createdAt)}</p>
+                        {e.note && <p className="history-note">{e.note}</p>}
+                      </div>
+                      <div className="history-actions">
+                        {emotion && (
+                          <Link className="btn btn--ghost" to={`/activities/${emotion.id}`}>Activities</Link>
+                        )}
+                        <button type="button" className="btn btn--ghost" onClick={() => remove(e.id)}>
+                          Delete
+                        </button>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+
+            <div className="danger-zone">
+              {confirmClear ? (
+                <>
+                  <p>Clear all {entries.length} check-ins? This cannot be undone.</p>
+                  <div className="page-actions">
+                    <button type="button" className="btn btn--danger" onClick={clearAll}>Yes, clear all</button>
+                    <button type="button" className="btn btn--ghost" onClick={() => setConfirmClear(false)}>Keep them</button>
+                  </div>
+                </>
+              ) : (
+                <button type="button" className="btn btn--ghost" onClick={() => setConfirmClear(true)}>
+                  Clear all history
+                </button>
+              )}
+            </div>
+          </section>
+        </>
+      )}
+    </div>
+  );
+}
+
+return { default: MyMood, MyMood };
+})();
+
+// ---- pages/Insights ----
+const M_pages_Insights = (() => {
+
+
+const { getEmotion } = M_data_emotions;
+const { ACTIVITIES } = M_data_activities;
+const { loadEntries, filterEntries, countByEmotion, formatDateTime } = M_utils_moods;
+const { loadRatings } = M_utils_ratings;
+
+// Every statement on this page is counted from entries the person saved.
+function Insights() {
+  const [entries] = useState(() => loadEntries());
+  const ratings = useMemo(() => loadRatings(), []);
+
+  const overall = countByEmotion(entries);
+  const week = countByEmotion(filterEntries(entries, { days: '7' }));
+  const topOverall = overall[0];
+  const topWeek = week[0];
+  const helpful = Object.entries(ratings)
+    .filter(([, r]) => r.helped > 0)
+    .sort((a, b) => b[1].helped - a[1].helped)
+    .map(([id, r]) => ({ activity: ACTIVITIES[id], helped: r.helped }))
+    .filter((x) => x.activity);
+  const recent = entries.slice(0, 5);
+
+  if (entries.length === 0) {
+    return (
+      <div className="page">
+        <header className="page-header">
+          <p className="eyebrow">Reflections</p>
+          <h1>My Insights</h1>
+        </header>
+        <section className="card empty-state">
+          <h2 className="card-title">Not enough check-ins yet.</h2>
+          <p className="muted">
+            Insights appear after you save a few check-ins on My Mood. Until then, there's nothing to read into.
+          </p>
+          <Link to="/mood" className="btn btn--primary">Go to My Mood</Link>
+        </section>
+      </div>
+    );
+  }
+
+  return (
+    <div className="page">
+      <header className="page-header">
+        <p className="eyebrow">Reflections</p>
+        <h1>My Insights</h1>
+        <p className="section-subtitle">
+          These reflections are based only on what you have recorded yourself. They are not a diagnosis.
+        </p>
+      </header>
+
+      <section className="stats-row">
+        <div className="card stat">
+          <p className="stat-number">{entries.length}</p>
+          <p className="muted">check-ins saved</p>
+        </div>
+        <div className="card stat">
+          <p className="stat-number">{week.reduce((n, x) => n + x.count, 0)}</p>
+          <p className="muted">in the last 7 days</p>
+        </div>
+      </section>
+
+      <section className="card" aria-labelledby="pattern-heading">
+        <h2 id="pattern-heading" className="card-title">Patterns in your check-ins</h2>
+        {topWeek && topWeek.count >= 2 ? (
+          <p>
+            You've recorded <strong>{topWeek.emotion.label.toLowerCase()}</strong> on {topWeek.count} check-ins this
+            week. Would you like to explore a short activity for that?
+          </p>
+        ) : (
+          <p className="muted">Not enough check-ins this week to point out a pattern yet.</p>
+        )}
+        {topOverall && (
+          <>
+            <p className="muted">Most frequent overall: {topOverall.emotion.label} ({topOverall.count}).</p>
+            <ul className="count-list">
+              {overall.slice(0, 5).map((x) => (
+                <li key={x.id}>
+                  <span>{x.emotion.label}</span>
+                  <span className="count-bar-wrap">
+                    <span className="count-bar" style={{ width: `${(x.count / overall[0].count) * 100}%` }} />
+                  </span>
+                  <span className="count-num">{x.count}</span>
+                </li>
+              ))}
+            </ul>
+            <Link className="btn btn--primary" to={`/activities/${topOverall.id}`}>
+              Try activities for {topOverall.emotion.label.toLowerCase()}
+            </Link>
+          </>
+        )}
+      </section>
+
+      <section className="card" aria-labelledby="helpful-heading">
+        <h2 id="helpful-heading" className="card-title">Activities you found helpful</h2>
+        {helpful.length === 0 ? (
+          <p className="muted">
+            Nothing marked yet. After an activity, tell CONNECT whether it helped, and it will show up here.
+          </p>
+        ) : (
+          <ul className="plain-list">
+            {helpful.map((x) => (
+              <li key={x.activity.id}>
+                {x.activity.name}: marked helpful {x.helped} {x.helped === 1 ? 'time' : 'times'}
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <section className="card" aria-labelledby="recent-heading">
+        <h2 id="recent-heading" className="card-title">Recent check-ins</h2>
+        <ul className="history-list">
+          {recent.map((e) => {
+            const emotion = getEmotion(e.emotionId);
+            return (
+              <li key={e.id} className="history-item">
+                <div>
+                  <p className="history-emotion">{emotion ? emotion.label : 'Unknown'}</p>
+                  <p className="muted small">{formatDateTime(e.createdAt)}</p>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+        <Link to="/mood" className="btn btn--ghost">See full history</Link>
+      </section>
+    </div>
+  );
+}
+
+return { default: Insights, Insights };
+})();
+
+// ---- components/fun/MoodFace ----
+const M_components_fun_MoodFace = (() => {
+
+
+// A cute face that smiles or frowns as you slide. It is a playful way to show
+// how you feel. Nothing here is saved.
+const LEVELS = [
+  { label: 'Very low', curve: -18 },
+  { label: 'A bit low', curve: -7 },
+  { label: 'Okay', curve: 3 },
+  { label: 'Good', curve: 12 },
+  { label: 'Great', curve: 20 },
+];
+
+function MoodFace() {
+  const [level, setLevel] = useState(2);
+  const { label, curve } = LEVELS[level];
+  const mouth = `M 62 128 Q 100 ${128 + curve} 138 128`;
+
+  return (
+    <div className="fun-panel">
+      <svg viewBox="0 0 200 200" className="mood-face" role="img" aria-label={`Face: ${label}`}>
+        <circle cx="100" cy="100" r="88" className="face-body" />
+        <circle cx="72" cy="112" r="10" className="face-cheek" />
+        <circle cx="128" cy="112" r="10" className="face-cheek" />
+        <circle cx="76" cy="90" r="8" className="face-eye" />
+        <circle cx="124" cy="90" r="8" className="face-eye" />
+        <path d={mouth} className="face-mouth" />
+      </svg>
+      <label htmlFor="mood-slider" className="fun-label">
+        How does your face feel right now? <strong>{label}</strong>
+      </label>
+      <input
+        id="mood-slider"
+        type="range"
+        min="0"
+        max="4"
+        step="1"
+        value={level}
+        onChange={(e) => setLevel(Number(e.target.value))}
+        className="slider"
+      />
+      <div className="slider-scale" aria-hidden="true">
+        <span>Very low</span>
+        <span>Great</span>
+      </div>
+    </div>
+  );
+}
+
+return { default: MoodFace, MoodFace };
+})();
+
+// ---- components/fun/Challenge60 ----
+const M_components_fun_Challenge60 = (() => {
+
+
+// A one-minute guided pause. Prompts change every 10 seconds.
+// You can pause, restart, or stop at any time. Nothing is scored.
+const TOTAL = 60;
+const PROMPTS = [
+  'Unclench your jaw and let your shoulders drop.',
+  'Breathe in slowly through your nose.',
+  'Look at something far away for a moment.',
+  'Roll your wrists and stretch your fingers.',
+  'Notice three sounds around you.',
+  'Let one long breath out, all the way.',
+];
+
+function Challenge60() {
+  const [left, setLeft] = useState(TOTAL);
+  const [running, setRunning] = useState(false);
+  const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    if (!running) return undefined;
+    const id = setInterval(() => setLeft((l) => Math.max(0, l - 1)), 1000);
+    return () => clearInterval(id);
+  }, [running]);
+
+  useEffect(() => {
+    if (running && left === 0) {
+      setRunning(false);
+      setDone(true);
+    }
+  }, [left, running]);
+
+  const elapsed = TOTAL - left;
+  const promptIndex = Math.min(Math.floor(elapsed / 10), PROMPTS.length - 1);
+
+  function start() {
+    if (done || left === 0) {
+      setLeft(TOTAL);
+      setDone(false);
+    }
+    setRunning(true);
+  }
+
+  return (
+    <div className="fun-panel">
+      <div className="timer" aria-live="polite" aria-label={`${left} seconds left`}>
+        {left}
+      </div>
+      <div className="progress-track" aria-hidden="true">
+        <div className="progress-fill" style={{ width: `${(elapsed / TOTAL) * 100}%` }} />
+      </div>
+
+      {done ? (
+        <p className="fun-label">You finished the 60 seconds. Nothing needs to change right now.</p>
+      ) : (
+        <p className="fun-label">{running || elapsed > 0 ? PROMPTS[promptIndex] : 'One minute. Press start when you are ready.'}</p>
+      )}
+
+      <div className="page-actions">
+        {running ? (
+          <button type="button" className="btn btn--ghost" onClick={() => setRunning(false)}>Pause</button>
+        ) : (
+          <button type="button" className="btn btn--primary" onClick={start}>
+            {elapsed > 0 && !done ? 'Resume' : 'Start'}
+          </button>
+        )}
+        {elapsed > 0 && (
+          <button
+            type="button"
+            className="btn btn--ghost"
+            onClick={() => {
+              setRunning(false);
+              setLeft(TOTAL);
+              setDone(false);
+            }}
+          >
+            Restart
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+return { default: Challenge60, Challenge60 };
+})();
+
+// ---- pages/Relax ----
+const M_pages_Relax = (() => {
+
+
+const BreathingBubble = M_components_fun_BreathingBubble.default;
+const PopBubbles = M_components_fun_PopBubbles.default;
+const VirtualGarden = M_components_fun_VirtualGarden.default;
+const ColorGame = M_components_fun_ColorGame.default;
+const MoodFace = M_components_fun_MoodFace.default;
+const Challenge60 = M_components_fun_Challenge60.default;
+
+const TABS = [
+  { id: 'breathing', label: 'Breathing bubble', Component: BreathingBubble },
+  { id: 'pop', label: 'Pop the bubbles', Component: PopBubbles },
+  { id: 'garden', label: 'Virtual garden', Component: VirtualGarden },
+  { id: 'color', label: 'Colour game', Component: ColorGame },
+  { id: 'face', label: 'Mood face', Component: MoodFace },
+  { id: 'challenge', label: '60-second pause', Component: Challenge60 },
+];
+
+function Relax() {
+  const [active, setActive] = useState('breathing');
+  const current = TABS.find((t) => t.id === active) ?? TABS[0];
+  const Active = current.Component;
+
+  return (
+    <div className="page">
+      <header className="page-header">
+        <p className="eyebrow">Take a small break</p>
+        <h1>Relax</h1>
+        <p className="section-subtitle">
+          Little activities to play with when you need a moment. Nothing here is scored or required.
+        </p>
+      </header>
+
+      <div className="tabs" role="tablist" aria-label="Relax activities">
+        {TABS.map((t) => (
+          <button
+            key={t.id}
+            type="button"
+            role="tab"
+            id={`tab-${t.id}`}
+            aria-selected={active === t.id}
+            aria-controls="relax-panel"
+            className={`tab${active === t.id ? ' is-active' : ''}`}
+            onClick={() => setActive(t.id)}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      <section className="card relax-panel" id="relax-panel" role="tabpanel" aria-labelledby={`tab-${active}`}>
+        <Active />
+      </section>
+
+      <p className="muted">
+        Feeling heavy rather than playful?{' '}
+        <Link to="/urgent-help">Get support or a helpline number</Link>.
+      </p>
+    </div>
+  );
+}
+
+return { default: Relax, Relax };
+})();
+
+// ---- App ----
+const M_App = (() => {
+
+const Navigation = M_components_Navigation.default;
+const Footer = M_components_Footer.default;
+const Home = M_pages_Home.default;
+const Recommendations = M_pages_Recommendations.default;
+const UrgentHelp = M_pages_UrgentHelp.default;
+const ActivityPage = M_pages_ActivityPage.default;
+const NotFound = M_pages_NotFound.default;
+const FeelExperience = M_pages_FeelExperience.default;
+const MyMood = M_pages_MyMood.default;
+const Insights = M_pages_Insights.default;
+const Relax = M_pages_Relax.default;
+
+function App() {
+  return (
+    <div className="app">
+      <a href="#main" className="skip-link">Skip to content</a>
+      <Navigation />
+      <main id="main" className="main">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/activities/:emotionId" element={<Recommendations />} />
+          <Route path="/activity/:activityId" element={<ActivityPage />} />
+          <Route path="/feel/:emotionId" element={<FeelExperience />} />
+          <Route path="/mood" element={<MyMood />} />
+          <Route path="/insights" element={<Insights />} />
+          <Route path="/relax" element={<Relax />} />
+          <Route path="/urgent-help" element={<UrgentHelp />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
+return { default: App, App };
+})();
+
+const App = M_App.default;
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <HashRouter>
+      <App />
+    </HashRouter>
+  </React.StrictMode>
+);
+</script>
+</body>
+</html>
